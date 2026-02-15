@@ -17,96 +17,11 @@
   </div>
 
   <div class="hero__bottle">
-    <div class="hero__bottle-placeholder">
-      <svg
-        viewBox="0 0 200 400"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <rect
-          x="75"
-          y="10"
-          width="50"
-          height="30"
-          rx="4"
-          stroke="var(--color-gold)"
-          stroke-width="1.5"
-          fill="none"></rect>
-        <rect
-          x="85"
-          y="0"
-          width="30"
-          height="15"
-          rx="3"
-          stroke="var(--color-gold)"
-          stroke-width="1"
-          fill="none"
-          opacity="0.6"></rect>
-        <path
-          d="M80 40 L80 80 Q80 95 70 110 L70 110"
-          stroke="var(--color-gold)"
-          stroke-width="1.5"
-          fill="none"></path>
-        <path
-          d="M120 40 L120 80 Q120 95 130 110 L130 110"
-          stroke="var(--color-gold)"
-          stroke-width="1.5"
-          fill="none"></path>
-        <rect
-          x="40"
-          y="110"
-          width="120"
-          height="250"
-          rx="8"
-          stroke="var(--color-gold)"
-          stroke-width="1.5"
-          fill="rgba(212,168,67,0.04)"></rect>
-        <rect
-          x="55"
-          y="160"
-          width="90"
-          height="120"
-          rx="4"
-          stroke="var(--color-gold)"
-          stroke-width="0.8"
-          fill="none"
-          opacity="0.4"></rect>
-        <line
-          x1="70"
-          y1="200"
-          x2="130"
-          y2="200"
-          stroke="var(--color-gold)"
-          stroke-width="0.5"
-          opacity="0.3"></line>
-        <line
-          x1="75"
-          y1="215"
-          x2="125"
-          y2="215"
-          stroke="var(--color-gold)"
-          stroke-width="0.5"
-          opacity="0.3"></line>
-        <line
-          x1="80"
-          y1="230"
-          x2="120"
-          y2="230"
-          stroke="var(--color-gold)"
-          stroke-width="0.5"
-          opacity="0.3"></line>
-        <rect
-          x="40"
-          y="360"
-          width="120"
-          height="10"
-          rx="2"
-          stroke="var(--color-gold)"
-          stroke-width="1"
-          fill="rgba(212,168,67,0.06)"></rect>
-      </svg>
-    </div>
+    <img
+      src="/vonavky/hero-image.png"
+      alt="Luxusní parfém – limitovaná edice 2026"
+      class="hero__bottle-img"
+    />
   </div>
 
   <div class="hero__particles" aria-hidden="true"></div>
@@ -200,7 +115,7 @@
   }
 
   .hero__title {
-    font-size: clamp(3rem, 10vw, 6.5rem);
+    font-size: clamp(3rem, 10vw, 5.5rem);
     color: var(--color-text-primary);
     margin-bottom: var(--space-lg);
     opacity: 0;
@@ -266,15 +181,14 @@
     will-change: transform;
   }
 
-  .hero__bottle-placeholder {
-    width: 130px;
-    filter: drop-shadow(0 0 40px rgba(212, 168, 67, 0.2));
-    animation: levitate 4s ease-in-out infinite;
-  }
-
-  .hero__bottle-placeholder svg {
-    width: 100%;
+  .hero__bottle-img {
+    margin-bottom: 34px;
+    width: 85vw;
+    max-width: 500px;
     height: auto;
+    display: block;
+    filter: drop-shadow(0 0 60px rgba(212, 168, 67, 0.3));
+    animation: levitate 4s ease-in-out infinite;
   }
 
   .hero__scroll-hint {
@@ -316,7 +230,11 @@
   :global(.hero__particle) {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(212, 168, 67, var(--p-opacity, 0.25)) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(212, 168, 67, var(--p-opacity, 0.25)) 0%,
+      transparent 70%
+    );
     animation: particleFloat var(--p-dur, 20s) ease-in-out infinite;
     animation-delay: var(--p-delay, 0s);
     will-change: transform, opacity;
@@ -356,20 +274,26 @@
   }
 
   @media (min-width: 768px) {
-    .hero__bottle-placeholder {
-      width: 170px;
+    .hero__bottle-img {
+      max-width: 560px;
     }
   }
 
   @media (min-width: 1024px) {
     .hero {
       flex-direction: row;
-      gap: var(--space-xl);
+      align-items: center;
+      justify-content: center;
       text-align: left;
+      padding: var(--space-lg) 4%;
+      gap: 2rem;
     }
 
     .hero__content {
-      flex: 1;
+      position: relative;
+      z-index: 2;
+      max-width: 550px;
+      flex-shrink: 0;
     }
 
     .hero__subtitle {
@@ -377,12 +301,20 @@
     }
 
     .hero__bottle {
-      flex-shrink: 0;
+      position: relative;
+      right: auto;
+      bottom: auto;
       margin-top: 0;
+      animation-delay: 0.8s;
+      flex-shrink: 0;
     }
 
-    .hero__bottle-placeholder {
-      width: 220px;
+    .hero__bottle-img {
+      width: auto;
+      max-width: none;
+      height: 75vh;
+      animation: none;
+      filter: drop-shadow(0 0 80px rgba(212, 168, 67, 0.35));
     }
 
     .hero__glow {
@@ -424,6 +356,52 @@
     });
   }
 
+  // Elegant floating particles — all screen sizes
+  if (!prefersReducedMotion) {
+    const particlesContainer = hero.querySelector(
+      ".hero__particles",
+    ) as HTMLElement;
+    const PARTICLE_COUNT = 30;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const dot = document.createElement("div");
+      dot.className = "hero__particle";
+
+      const size = 2 + Math.random() * 4;
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const opacity = 0.12 + Math.random() * 0.2;
+      const duration = 16 + Math.random() * 14;
+      const delay = -(Math.random() * duration);
+
+      // Random drift distances for organic movement
+      const dx1 = (Math.random() - 0.5) * 80;
+      const dy1 = -30 - Math.random() * 80;
+      const dx2 = (Math.random() - 0.5) * 60;
+      const dy2 = -60 - Math.random() * 100;
+      const dx3 = (Math.random() - 0.5) * 70;
+      const dy3 = -20 - Math.random() * 60;
+
+      dot.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}%;
+        top: ${y}%;
+        --p-opacity: ${opacity};
+        --p-dur: ${duration}s;
+        --p-delay: ${delay}s;
+        --p-dx1: ${dx1}px;
+        --p-dy1: ${dy1}px;
+        --p-dx2: ${dx2}px;
+        --p-dy2: ${dy2}px;
+        --p-dx3: ${dx3}px;
+        --p-dy3: ${dy3}px;
+      `;
+
+      particlesContainer.appendChild(dot);
+    }
+  }
+
   // Interactive effects — desktop only
   if (!prefersReducedMotion && !isTouchDevice && isDesktop) {
     // State
@@ -458,7 +436,6 @@
 
     // Animation loop
     function animate() {
-
       // Lerp mouse
       const prevX = mouseX;
       const prevY = mouseY;
