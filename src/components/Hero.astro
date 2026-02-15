@@ -50,6 +50,7 @@
     justify-content: center;
     text-align: center;
     padding: var(--space-lg);
+    padding-top: 2rem;
     position: relative;
     overflow: hidden;
   }
@@ -91,7 +92,7 @@
   .hero__preheadline {
     display: inline-block;
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.35em;
     text-transform: uppercase;
@@ -111,13 +112,13 @@
       shimmer 3s ease-in-out infinite;
     animation-delay: 0.2s, 0s;
     opacity: 0;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-sm);
   }
 
   .hero__title {
-    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-size: clamp(2.5rem, 10vw, 5.5rem);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-sm);
     opacity: 0;
     text-shadow: 0 0 80px rgba(212, 168, 67, 0.08);
   }
@@ -151,10 +152,10 @@
   }
 
   .hero__subtitle {
-    font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+    font-size: clamp(0.95rem, 3.5vw, 1.5rem);
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-xl);
-    line-height: 1.8;
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
     animation: fadeInUp 0.8s ease forwards;
     animation-delay: 0.6s;
     opacity: 0;
@@ -167,14 +168,14 @@
     animation: fadeInUp 0.8s ease forwards;
     animation-delay: 0.8s;
     opacity: 0;
-    font-size: 1.2rem;
-    padding: 1.2rem 3.5rem;
+    font-size: 1rem;
+    padding: 0.85rem 2.5rem;
   }
 
   .hero__bottle {
     position: relative;
     z-index: 1;
-    margin-top: var(--space-xl);
+    margin-top: var(--space-md);
     animation: fadeInUp 1s ease forwards;
     animation-delay: 1s;
     opacity: 0;
@@ -182,9 +183,8 @@
   }
 
   .hero__bottle-img {
-    margin-bottom: 34px;
-    width: 85vw;
-    max-width: 500px;
+    width: 75vw;
+    max-width: 340px;
     height: auto;
     display: block;
     filter: drop-shadow(0 0 60px rgba(212, 168, 67, 0.3));
@@ -285,19 +285,35 @@
       align-items: center;
       justify-content: center;
       text-align: left;
-      padding: var(--space-lg) 4%;
+      padding: var(--space-lg) 6%;
+      padding-top: var(--space-lg);
       gap: 2rem;
     }
 
     .hero__content {
       position: relative;
       z-index: 2;
-      max-width: 550px;
-      flex-shrink: 0;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero__preheadline {
+      font-size: 1rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero__title {
+      margin-bottom: var(--space-lg);
     }
 
     .hero__subtitle {
       margin-left: 0;
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero__cta {
+      font-size: 1.2rem;
+      padding: 1.2rem 3.5rem;
     }
 
     .hero__bottle {
@@ -306,13 +322,13 @@
       bottom: auto;
       margin-top: 0;
       animation-delay: 0.8s;
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
 
     .hero__bottle-img {
       width: auto;
       max-width: none;
-      height: 75vh;
+      height: 70vh;
       animation: none;
       filter: drop-shadow(0 0 80px rgba(212, 168, 67, 0.35));
     }
