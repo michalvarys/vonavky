@@ -189,6 +189,24 @@ a {
 /* ========================================
    Reduced Motion
    ======================================== */
+/* ========================================
+   Mobile Spacing
+   ======================================== */
+@media (max-width: 640px) {
+  .btn-gold {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-outline {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

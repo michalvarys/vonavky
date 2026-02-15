@@ -80,12 +80,51 @@
 
   .offer__urgency {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 0.5rem;
     font-size: 0.85rem;
     color: var(--color-gold);
     font-weight: 500;
     padding-top: var(--space-sm);
+  }
+
+  @media (max-width: 640px) {
+    .offer {
+      padding: 2.5rem 1rem;
+    }
+
+    .offer__card {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .offer__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .offer__heading {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .offer__subtext {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .offer__cta {
+      display: block;
+      padding: 1rem 1.5rem;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    .offer__urgency {
+      font-size: 0.8rem;
+    }
   }
 </style>
