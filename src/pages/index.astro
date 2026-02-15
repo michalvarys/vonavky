@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import HeroLayered from '../components/HeroLayered.astro';
 import Story from '../components/Story.astro';
 import ValueProposition from '../components/ValueProposition.astro';
 import Offer from '../components/Offer.astro';
@@ -10,7 +11,10 @@ import { content } from '../data/variants/premium';
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
-  <Hero hero={content.hero} />
+  {content.heroVariant === 'layered'
+    ? <HeroLayered hero={content.hero} />
+    : <Hero hero={content.hero} />
+  }
   <ValueProposition value={content.value} />
   <Offer offer={content.offer} />
   <Story story={content.story} />

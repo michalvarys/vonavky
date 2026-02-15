@@ -1,8 +1,11 @@
+export type HeroVariant = 'default' | 'layered';
+
 export interface SiteContent {
   meta: {
     title: string;
     description: string;
   };
+  heroVariant?: HeroVariant;
   hero: {
     preheadline: string;
     title: string;
