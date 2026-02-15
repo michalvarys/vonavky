@@ -5,21 +5,46 @@
 <section class="waitlist" id="waitlist">
   <div class="waitlist__container">
     <div class="waitlist__card animate-on-scroll">
-      <h2 class="waitlist__heading">Zapište se na čekací listinu</h2>
+      <h2 class="waitlist__heading">Zapiš se na čekací listinu</h2>
       <p class="waitlist__subtitle">
-        Zápis je zdarma a&nbsp;nezávazný. Budeme vás informovat o&nbsp;spuštění prodeje.
+        Zápis je zdarma a&nbsp;nezávazný. Dáme ti vědět, až pro tebe bude Aura+
+        připravená.
       </p>
 
       <form id="waitlist-form" class="waitlist__form" novalidate>
         <div class="form-group">
           <label>Mám zájem o</label>
           <div class="fragrance-toggle">
-            <input type="radio" id="fragrance-him" name="fragrance" value="him" class="fragrance-toggle__input" />
-            <label for="fragrance-him" class="fragrance-toggle__label">Pro něj</label>
-            <input type="radio" id="fragrance-her" name="fragrance" value="her" class="fragrance-toggle__input" />
-            <label for="fragrance-her" class="fragrance-toggle__label">Pro ni</label>
-            <input type="radio" id="fragrance-both" name="fragrance" value="both" class="fragrance-toggle__input" />
-            <label for="fragrance-both" class="fragrance-toggle__label">Obojí</label>
+            <input
+              type="radio"
+              id="fragrance-him"
+              name="fragrance"
+              value="him"
+              class="fragrance-toggle__input"
+            />
+            <label for="fragrance-him" class="fragrance-toggle__label"
+              >Pro něj</label
+            >
+            <input
+              type="radio"
+              id="fragrance-her"
+              name="fragrance"
+              value="her"
+              class="fragrance-toggle__input"
+            />
+            <label for="fragrance-her" class="fragrance-toggle__label"
+              >Pro ni</label
+            >
+            <input
+              type="radio"
+              id="fragrance-both"
+              name="fragrance"
+              value="both"
+              class="fragrance-toggle__input"
+            />
+            <label for="fragrance-both" class="fragrance-toggle__label"
+              >Obojí</label
+            >
           </div>
           <span class="error-message" aria-live="polite"></span>
         </div>
@@ -65,29 +90,37 @@
         </div>
 
         <button type="submit" class="btn-gold waitlist__submit">
-          Zapsat se zdarma
+          Chci zvýšit auru
         </button>
       </form>
 
-      <p class="waitlist__note">Vaše údaje jsou v bezpečí. Žádný spam, slibujeme.</p>
+      <p class="waitlist__note">
+        Tvoje údaje jsou v bezpečí. Žádný spam, slibujeme.
+      </p>
     </div>
   </div>
 </section>
 
 <script>
-  const form = document.getElementById('waitlist-form') as HTMLFormElement;
+  const form = document.getElementById("waitlist-form") as HTMLFormElement;
 
   const validators: Record<string, (v: string) => string> = {
-    name: (v) => v.trim().length >= 2 ? '' : 'Prosím zadejte své jméno.',
-    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Prosím zadejte platný e-mail.',
-    phone: (v) => /^(\+?\d[\d\s\-]{7,})$/.test(v.trim()) ? '' : 'Prosím zadejte platné telefonní číslo.',
+    name: (v) => (v.trim().length >= 2 ? "" : "Prosím zadejte své jméno."),
+    email: (v) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+        ? ""
+        : "Prosím zadejte platný e-mail.",
+    phone: (v) =>
+      /^(\+?\d[\d\s\-]{7,})$/.test(v.trim())
+        ? ""
+        : "Prosím zadejte platné telefonní číslo.",
   };
 
   function validateFragrance(): boolean {
-    const group = form.querySelector('.fragrance-toggle')!.parentElement!;
-    const error = group.querySelector('.error-message') as HTMLElement;
+    const group = form.querySelector(".fragrance-toggle")!.parentElement!;
+    const error = group.querySelector(".error-message") as HTMLElement;
     const checked = form.querySelector('input[name="fragrance"]:checked');
-    const message = checked ? '' : 'Prosím vyberte vůni.';
+    const message = checked ? "" : "Prosím vyberte vůni.";
     error.textContent = message;
     return !message;
   }
@@ -96,14 +129,16 @@
     const validate = validators[input.name];
     if (!validate) return true;
 
-    const error = input.parentElement!.querySelector('.error-message') as HTMLElement;
+    const error = input.parentElement!.querySelector(
+      ".error-message",
+    ) as HTMLElement;
     const message = validate(input.value);
     error.textContent = message;
-    input.classList.toggle('invalid', !!message);
+    input.classList.toggle("invalid", !!message);
     return !message;
   }
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     let isValid = true;
 
@@ -115,7 +150,11 @@
     }
 
     if (isValid) {
-      const fragrance = (form.querySelector('input[name="fragrance"]:checked') as HTMLInputElement).value;
+      const fragrance = (
+        form.querySelector(
+          'input[name="fragrance"]:checked',
+        ) as HTMLInputElement
+      ).value;
       const data = {
         fragrance,
         name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
@@ -139,21 +178,25 @@
       // - Supabase / Firebase
       // === END MOCK ===
 
-      console.log('Waitlist submission:', data);
+      console.log("Waitlist submission:", data);
 
-      form.style.display = 'none';
-      const note = form.parentElement!.querySelector('.waitlist__note') as HTMLElement;
-      if (note) note.style.display = 'none';
-      const subtitle = form.parentElement!.querySelector('.waitlist__subtitle') as HTMLElement;
-      if (subtitle) subtitle.style.display = 'none';
+      form.style.display = "none";
+      const note = form.parentElement!.querySelector(
+        ".waitlist__note",
+      ) as HTMLElement;
+      if (note) note.style.display = "none";
+      const subtitle = form.parentElement!.querySelector(
+        ".waitlist__subtitle",
+      ) as HTMLElement;
+      if (subtitle) subtitle.style.display = "none";
 
-      const success = document.createElement('div');
-      success.className = 'success-message';
+      const success = document.createElement("div");
+      success.className = "success-message";
       success.innerHTML = `
-        <p class="success-confirm">Jste na čekací listině!</p>
+        <p class="success-confirm">Jsi na čekací listině!</p>
         <div class="upsell">
-          <p class="upsell__text">Zarezervujte si parfém teď hned a&nbsp;získejte <strong>1&nbsp;+&nbsp;1 zdarma</strong></p>
-          <a href="#" class="btn-gold upsell__cta">Chci 2 parfémy za&nbsp;399&nbsp;Kč</a>
+          <p class="upsell__text">Zarezervuj si Aura+ teď hned a&nbsp;získej <strong>1&nbsp;+&nbsp;1 zdarma</strong></p>
+          <a href="#" class="btn-gold upsell__cta">Chci 2× Aura+ za&nbsp;399&nbsp;Kč</a>
           <span class="upsell__note">Nabídka platí jen teď.</span>
         </div>
       `;
@@ -162,8 +205,8 @@
   });
 
   // Real-time validation on blur
-  for (const input of form.querySelectorAll('input')) {
-    input.addEventListener('blur', () => {
+  for (const input of form.querySelectorAll("input")) {
+    input.addEventListener("blur", () => {
       validateField(input as HTMLInputElement);
     });
   }
@@ -280,7 +323,9 @@
     color: var(--color-text-primary);
     font-family: var(--font-body);
     font-size: 1rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .form-group input::placeholder {
@@ -338,7 +383,11 @@
     padding: var(--space-lg);
     border: 2px solid rgba(212, 168, 67, 0.4);
     border-radius: 12px;
-    background: linear-gradient(135deg, rgba(212, 168, 67, 0.06) 0%, rgba(212, 168, 67, 0.02) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 67, 0.06) 0%,
+      rgba(212, 168, 67, 0.02) 100%
+    );
   }
 
   :global(.upsell__text) {
