@@ -28,6 +28,7 @@ export function getStaticPaths() {
 
 interface Props { content: SiteContent }
 const { content } = Astro.props;
+const { variant } = Astro.params;
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
@@ -35,6 +36,6 @@ const { content } = Astro.props;
   <ValueProposition value={content.value} />
   <Offer offer={content.offer} />
   <Story story={content.story} />
-  <WaitlistForm waitlist={content.waitlist} />
+  <WaitlistForm waitlist={content.waitlist} variant={variant} />
   <Footer footer={content.footer} />
 </Layout>

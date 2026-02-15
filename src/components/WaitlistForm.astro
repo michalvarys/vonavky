@@ -1,13 +1,19 @@
 ---
 import type { SiteContent } from '../data/content';
-interface Props { waitlist: SiteContent['waitlist'] }
-const { waitlist } = Astro.props;
+interface Props {
+  waitlist: SiteContent['waitlist'];
+  variant: string;
+}
+const { waitlist, variant } = Astro.props;
+const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 ---
 
 <section class="waitlist" id="waitlist">
   <div class="waitlist__container">
     <div
       class="waitlist__card animate-on-scroll"
+      data-variant={variant}
+      data-api-url={apiUrl}
       data-upsell-confirm={waitlist.upsell.confirm}
       data-upsell-text={waitlist.upsell.text}
       data-upsell-highlight={waitlist.upsell.highlight}
@@ -144,7 +150,15 @@ const { waitlist } = Astro.props;
     return !message;
   }
 
-  form.addEventListener("submit", (e) => {
+  const card = form.closest(".waitlist__card") as HTMLElement;
+  const API_URL = card.dataset.apiUrl || "http://localhost:3000";
+  const variant = card.dataset.variant || "premium";
+
+  // Shared form data — populated on submit, reused for checkout
+  let formData: { fragrance: string; name: string; email: string; phone: string } | null = null;
+  let waitlistEntryId: number | null = null;
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     let isValid = true;
 
@@ -155,65 +169,109 @@ const { waitlist } = Astro.props;
       if (!validateField(input)) isValid = false;
     }
 
-    if (isValid) {
-      const fragrance = (
-        form.querySelector(
-          'input[name="fragrance"]:checked',
-        ) as HTMLInputElement
-      ).value;
-      const data = {
-        fragrance,
-        name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
-        email: (form.querySelector('[name="email"]') as HTMLInputElement).value,
-        phone: (form.querySelector('[name="phone"]') as HTMLInputElement).value,
-      };
+    if (!isValid) return;
 
-      // === MOCK SUBMISSION ===
-      // Replace this block with a fetch() call to your API endpoint:
-      //
-      // const response = await fetch('/api/waitlist', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(data),
-      // });
-      //
-      // Possible backends:
-      // - Astro API routes (add SSR adapter)
-      // - Netlify Forms (add data-netlify attribute to <form>)
-      // - Google Sheets via Apps Script
-      // - Supabase / Firebase
-      // === END MOCK ===
+    const fragrance = (
+      form.querySelector(
+        'input[name="fragrance"]:checked',
+      ) as HTMLInputElement
+    ).value;
 
-      console.log("Waitlist submission:", data);
+    formData = {
+      fragrance,
+      name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
+      email: (form.querySelector('[name="email"]') as HTMLInputElement).value,
+      phone: (form.querySelector('[name="phone"]') as HTMLInputElement).value,
+    };
 
-      form.style.display = "none";
-      const note = form.parentElement!.querySelector(
-        ".waitlist__note",
-      ) as HTMLElement;
-      if (note) note.style.display = "none";
-      const subtitle = form.parentElement!.querySelector(
-        ".waitlist__subtitle",
-      ) as HTMLElement;
-      if (subtitle) subtitle.style.display = "none";
+    // Disable submit button while sending
+    const submitBtn = form.querySelector(".waitlist__submit") as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Odesílám…";
 
-      const card = form.closest(".waitlist__card") as HTMLElement;
-      const uConfirm = card.dataset.upsellConfirm || "";
-      const uText = card.dataset.upsellText || "";
-      const uHighlight = card.dataset.upsellHighlight || "";
-      const uCta = card.dataset.upsellCta || "";
-      const uNote = card.dataset.upsellNote || "";
+    try {
+      const response = await fetch(`${API_URL}/api/waitlist`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, variant }),
+      });
 
-      const success = document.createElement("div");
-      success.className = "success-message";
-      success.innerHTML = `
-        <p class="success-confirm">${uConfirm}</p>
-        <div class="upsell">
-          <p class="upsell__text">${uText} <strong>${uHighlight}</strong></p>
-          <a href="#" class="btn-gold upsell__cta">${uCta}</a>
-          <span class="upsell__note">${uNote}</span>
-        </div>
-      `;
-      form.parentElement!.insertBefore(success, form.nextSibling);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Chyba serveru");
+      }
+
+      waitlistEntryId = result.entryId ?? null;
+    } catch (err) {
+      console.error("Waitlist submission failed:", err);
+      // Show upsell anyway — form data is still collected locally
+    }
+
+    // Show success + upsell
+    form.style.display = "none";
+    const note = form.parentElement!.querySelector(
+      ".waitlist__note",
+    ) as HTMLElement;
+    if (note) note.style.display = "none";
+    const subtitle = form.parentElement!.querySelector(
+      ".waitlist__subtitle",
+    ) as HTMLElement;
+    if (subtitle) subtitle.style.display = "none";
+
+    const uConfirm = card.dataset.upsellConfirm || "";
+    const uText = card.dataset.upsellText || "";
+    const uHighlight = card.dataset.upsellHighlight || "";
+    const uCta = card.dataset.upsellCta || "";
+    const uNote = card.dataset.upsellNote || "";
+
+    const success = document.createElement("div");
+    success.className = "success-message";
+    success.innerHTML = `
+      <p class="success-confirm">${uConfirm}</p>
+      <div class="upsell">
+        <p class="upsell__text">${uText} <strong>${uHighlight}</strong></p>
+        <button type="button" class="btn-gold upsell__cta" id="upsell-checkout">${uCta}</button>
+        <span class="upsell__note">${uNote}</span>
+      </div>
+    `;
+    form.parentElement!.insertBefore(success, form.nextSibling);
+  });
+
+  // Upsell checkout — redirect to Stripe
+  document.addEventListener("click", async (e) => {
+    const btn = (e.target as HTMLElement).closest("#upsell-checkout");
+    if (!btn || !formData) return;
+    e.preventDefault();
+
+    (btn as HTMLButtonElement).disabled = true;
+    (btn as HTMLButtonElement).textContent = "Přesměrovávám…";
+
+    try {
+      const response = await fetch(`${API_URL}/api/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          variant,
+          productType: "double",
+          email: formData.email,
+          name: formData.name,
+          phone: formData.phone,
+          waitlistEntryId: waitlistEntryId ?? undefined,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.url) {
+        window.location.href = result.url;
+      } else {
+        throw new Error(result.error || "Chyba");
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err);
+      (btn as HTMLButtonElement).disabled = false;
+      (btn as HTMLButtonElement).textContent = card.dataset.upsellCta || "Zkusit znovu";
     }
   });
 

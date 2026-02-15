@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Objednávka přijata" description="Děkujeme za vaši objednávku.">
+  <section class="success">
+    <div class="success__container">
+      <div class="success__icon" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--color-gold)" stroke-width="2">
+          <circle cx="32" cy="32" r="28" />
+          <path d="M20 32l8 8 16-16" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h1 class="success__heading">Děkujeme za objednávku!</h1>
+      <p class="success__text">
+        Vaše platba byla úspěšně zpracována. Brzy vám pošleme potvrzení na&nbsp;e-mail.
+      </p>
+      <a href="/vonavky/" class="btn-outline success__cta">Zpět na hlavní stránku</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .success {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    text-align: center;
+  }
+
+  .success__container {
+    max-width: 500px;
+  }
+
+  .success__icon {
+    margin-bottom: var(--space-lg);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .success__heading {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+  }
+
+  .success__text {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-xl);
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+  }
+
+  .success__cta {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+    padding: 0.9rem 2.5rem;
+  }
+</style>
