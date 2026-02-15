@@ -6,7 +6,28 @@ import ValueProposition from '../components/ValueProposition.astro';
 import Offer from '../components/Offer.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
 import Footer from '../components/Footer.astro';
-import { content } from '../data/variants/premium';
+
+import type { SiteContent } from '../data/content';
+
+const variants = import.meta.glob<{ content: SiteContent }>(
+  '../data/variants/*.ts',
+  { eager: true },
+);
+
+export function getStaticPaths() {
+  const modules = import.meta.glob<{ content: SiteContent }>(
+    '../data/variants/*.ts',
+    { eager: true },
+  );
+
+  return Object.entries(modules).map(([path, mod]) => {
+    const slug = path.split('/').pop()!.replace('.ts', '');
+    return { params: { variant: slug }, props: { content: mod.content } };
+  });
+}
+
+interface Props { content: SiteContent }
+const { content } = Astro.props;
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>

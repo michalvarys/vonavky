@@ -1,5 +1,9 @@
 ---
-
+import type { SiteContent } from "../data/content";
+interface Props {
+  hero: SiteContent["hero"];
+}
+const { hero } = Astro.props;
 ---
 
 <section class="hero">
@@ -7,16 +11,16 @@
   <div class="hero__glow hero__glow--2"></div>
 
   <div class="hero__content">
-    <span class="hero__preheadline">Limitovaná edice 2026</span>
-    <h1 class="hero__title">Zlepši si Auru</h1>
-    <p class="hero__subtitle">Jedno stříknutí posune Auru na další level.</p>
-    <a href="#value" class="btn-gold hero__cta">Co je Aura+</a>
+    <span class="hero__preheadline">{hero.preheadline}</span>
+    <h1 class="hero__title">{hero.title}</h1>
+    <p class="hero__subtitle" set:html={hero.subtitle} />
+    <a href="#value" class="btn-gold hero__cta">{hero.cta}</a>
   </div>
 
   <div class="hero__bottle">
     <img
       src="/vonavky/hero-image.png"
-      alt="Aura+ parfém – limitovaná edice 2026"
+      alt={hero.imgAlt}
       class="hero__bottle-img"
     />
   </div>
@@ -47,7 +51,7 @@
     justify-content: flex-start;
     text-align: center;
     padding: var(--space-lg);
-    padding-top: 15svh;
+    padding-top: var(--space-lg);
     position: relative;
     overflow: hidden;
   }
@@ -109,7 +113,7 @@
       shimmer 3s ease-in-out infinite;
     animation-delay: 0.2s, 0s;
     opacity: 0;
-    margin-bottom: var(--space-sm);
+    margin-bottom: 3rem;
   }
 
   .hero__title {
@@ -167,12 +171,17 @@
     opacity: 0;
     font-size: 1rem;
     padding: 0.85rem 2.5rem;
+    position: relative;
+    z-index: 3;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   .hero__bottle {
     position: relative;
     z-index: 0;
-    margin-top: -4rem;
+    margin-top: -8rem;
     animation: fadeInUp 1s ease forwards;
     animation-delay: 1s;
     opacity: 0;

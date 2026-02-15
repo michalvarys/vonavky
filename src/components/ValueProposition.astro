@@ -1,121 +1,53 @@
 ---
+import type { SiteContent } from '../data/content';
+interface Props { value: SiteContent['value'] }
+const { value } = Astro.props;
 
+const icons = [
+  `<path d="M24 4C24 4 8 18 8 28C8 37 15 44 24 44C33 44 40 37 40 28C40 18 24 4 24 4Z"></path><path d="M24 36C28 36 32 33 32 28" opacity="0.5"></path>`,
+  `<circle cx="24" cy="24" r="18"></circle><path d="M24 12V24L32 28"></path>`,
+  `<path d="M24 4L28.5 17H42L31 25.5L35 39L24 30L13 39L17 25.5L6 17H19.5L24 4Z"></path>`,
+  `<rect x="8" y="8" width="32" height="32" rx="4"></rect><path d="M16 24L22 30L34 18"></path>`,
+];
 ---
 
 <section class="value" id="value">
   <div class="value__container">
     <div class="value__intro animate-on-scroll">
-      <span class="value__label">Proč Aura+</span>
-      <h2 class="value__heading">Tvoje aura potřebuje boost</h2>
-      <p class="value__subtext">
-        Znáš ten pocit, kdy se&nbsp;po&nbsp;tobě otočí a&nbsp;zeptají se: „Čím
-        to&nbsp;voníš?" S&nbsp;Aura+ to&nbsp;bude každý den.
-      </p>
+      <span class="value__label">{value.label}</span>
+      <h2 class="value__heading">{value.heading}</h2>
+      <p class="value__subtext" set:html={value.subtext} />
     </div>
 
     <div class="value__grid">
-      <div class="value__card animate-on-scroll">
-        <div class="value__card-header">
-          <div class="value__icon">
-            <svg
-              viewBox="0 0 48 48"
-              fill="none"
-              stroke="var(--color-gold)"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <path
-                d="M24 4C24 4 8 18 8 28C8 37 15 44 24 44C33 44 40 37 40 28C40 18 24 4 24 4Z"
-              ></path>
-              <path d="M24 36C28 36 32 33 32 28" opacity="0.5"></path>
-            </svg>
+      {value.cards.map((card, i) => (
+        <div class="value__card animate-on-scroll">
+          <div class="value__card-header">
+            <div class="value__icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="var(--color-gold)" stroke-width="1.5" aria-hidden="true">
+                <Fragment set:html={icons[i] || icons[0]} />
+              </svg>
+            </div>
+            <h3 class="value__card-title">{card.title}</h3>
           </div>
-          <h3 class="value__card-title">Aura, co zůstane</h3>
+          <p class="value__card-text" set:html={card.text} />
         </div>
-        <p class="value__card-text">
-          Tvojí Aury si všimnou dřív než tebe. A&nbsp;zůstane
-          i&nbsp;po&nbsp;tvém odchodu.
-        </p>
-      </div>
-
-      <div class="value__card animate-on-scroll">
-        <div class="value__card-header">
-          <div class="value__icon">
-            <svg
-              viewBox="0 0 48 48"
-              fill="none"
-              stroke="var(--color-gold)"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <circle cx="24" cy="24" r="18"></circle>
-              <path d="M24 12V24L32 28"></path>
-            </svg>
-          </div>
-          <h3 class="value__card-title">12 hodin boost</h3>
-        </div>
-        <p class="value__card-text">
-          Jedno stříknutí a&nbsp;máš Auru na celý den.
-        </p>
-      </div>
-
-      <div class="value__card animate-on-scroll">
-        <div class="value__card-header">
-          <div class="value__icon">
-            <svg
-              viewBox="0 0 48 48"
-              fill="none"
-              stroke="var(--color-gold)"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <path
-                d="M24 4L28.5 17H42L31 25.5L35 39L24 30L13 39L17 25.5L6 17H19.5L24 4Z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="value__card-title">Čistá kompozice</h3>
-        </div>
-        <p class="value__card-text">
-          Žádné kompromisy. Prémiové ingredience pro&nbsp;prémiovou auru.
-        </p>
-      </div>
-
-      <div class="value__card animate-on-scroll">
-        <div class="value__card-header">
-          <div class="value__icon">
-            <svg
-              viewBox="0 0 48 48"
-              fill="none"
-              stroke="var(--color-gold)"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <rect x="8" y="8" width="32" height="32" rx="4"></rect>
-              <path d="M16 24L22 30L34 18"></path>
-            </svg>
-          </div>
-          <h3 class="value__card-title">Tajná zbraň aury</h3>
-        </div>
-        <p class="value__card-text">
-          Nekoupíš v&nbsp;drogerii. Aura+ nosí jen ti, co&nbsp;vědí.
-        </p>
-      </div>
+      ))}
     </div>
 
     <div class="value__price-anchor animate-on-scroll">
       <div class="value__price-steps">
         <div class="value__price-step">
-          <span class="value__price-step-label">Běžná cena</span>
-          <span class="value__price-market">2 000–4 000 Kč</span>
+          <span class="value__price-step-label">{value.pricing.marketLabel}</span>
+          <span class="value__price-market">{value.pricing.marketPrice}</span>
         </div>
         <div class="value__price-step">
-          <span class="value__price-step-label">Naše cena</span>
-          <span class="value__price-retail">1 299 Kč</span>
+          <span class="value__price-step-label">{value.pricing.retailLabel}</span>
+          <span class="value__price-retail">{value.pricing.retailPrice}</span>
         </div>
         <div class="value__price-step value__price-step--highlight">
-          <span class="value__price-step-label">Cena dnes</span>
-          <span class="value__price-yours">399 Kč</span>
+          <span class="value__price-step-label">{value.pricing.yourLabel}</span>
+          <span class="value__price-yours">{value.pricing.yourPrice}</span>
         </div>
       </div>
     </div>

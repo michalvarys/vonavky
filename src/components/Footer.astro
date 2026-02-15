@@ -1,10 +1,12 @@
 ---
-
+import type { SiteContent } from '../data/content';
+interface Props { footer: SiteContent['footer'] }
+const { footer } = Astro.props;
 ---
 
 <footer class="footer">
   <div class="footer__divider" aria-hidden="true"></div>
-  <p class="footer__copyright">&copy; 2026 Aura+. Všechna práva vyhrazena.</p>
+  <p class="footer__copyright" set:html={footer.copyright} />
 </footer>
 
 <style>

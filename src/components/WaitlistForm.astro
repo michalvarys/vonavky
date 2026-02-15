@@ -1,15 +1,21 @@
 ---
-
+import type { SiteContent } from '../data/content';
+interface Props { waitlist: SiteContent['waitlist'] }
+const { waitlist } = Astro.props;
 ---
 
 <section class="waitlist" id="waitlist">
   <div class="waitlist__container">
-    <div class="waitlist__card animate-on-scroll">
-      <h2 class="waitlist__heading">Zapiš se na čekací listinu</h2>
-      <p class="waitlist__subtitle">
-        Zápis je zdarma a&nbsp;nezávazný. Dáme ti vědět, až pro tebe bude Aura+
-        připravená.
-      </p>
+    <div
+      class="waitlist__card animate-on-scroll"
+      data-upsell-confirm={waitlist.upsell.confirm}
+      data-upsell-text={waitlist.upsell.text}
+      data-upsell-highlight={waitlist.upsell.highlight}
+      data-upsell-cta={waitlist.upsell.cta}
+      data-upsell-note={waitlist.upsell.note}
+    >
+      <h2 class="waitlist__heading">{waitlist.heading}</h2>
+      <p class="waitlist__subtitle" set:html={waitlist.subtitle} />
 
       <form id="waitlist-form" class="waitlist__form" novalidate>
         <div class="form-group">
@@ -90,12 +96,12 @@
         </div>
 
         <button type="submit" class="btn-gold waitlist__submit">
-          Chci zvýšit auru
+          {waitlist.submit}
         </button>
       </form>
 
       <p class="waitlist__note">
-        Tvoje údaje jsou v bezpečí. Žádný spam, slibujeme.
+        {waitlist.note}
       </p>
     </div>
   </div>
@@ -190,14 +196,21 @@
       ) as HTMLElement;
       if (subtitle) subtitle.style.display = "none";
 
+      const card = form.closest(".waitlist__card") as HTMLElement;
+      const uConfirm = card.dataset.upsellConfirm || "";
+      const uText = card.dataset.upsellText || "";
+      const uHighlight = card.dataset.upsellHighlight || "";
+      const uCta = card.dataset.upsellCta || "";
+      const uNote = card.dataset.upsellNote || "";
+
       const success = document.createElement("div");
       success.className = "success-message";
       success.innerHTML = `
-        <p class="success-confirm">Jsi na čekací listině!</p>
+        <p class="success-confirm">${uConfirm}</p>
         <div class="upsell">
-          <p class="upsell__text">Zarezervuj si Aura+ teď hned a&nbsp;získej <strong>1&nbsp;+&nbsp;1 zdarma</strong></p>
-          <a href="#" class="btn-gold upsell__cta">Chci 2× Aura+ za&nbsp;399&nbsp;Kč</a>
-          <span class="upsell__note">Nabídka platí jen teď.</span>
+          <p class="upsell__text">${uText} <strong>${uHighlight}</strong></p>
+          <a href="#" class="btn-gold upsell__cta">${uCta}</a>
+          <span class="upsell__note">${uNote}</span>
         </div>
       `;
       form.parentElement!.insertBefore(success, form.nextSibling);

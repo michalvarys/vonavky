@@ -1,17 +1,16 @@
 ---
-
+import type { SiteContent } from '../data/content';
+interface Props { offer: SiteContent['offer'] }
+const { offer } = Astro.props;
 ---
 
 <section class="offer" id="offer">
   <div class="offer__container">
     <div class="offer__card animate-on-scroll">
-      <span class="offer__label">Exkluzivní nabídka</span>
-      <h2 class="offer__heading">Získej Aura+ za&nbsp;speciální cenu</h2>
-      <p class="offer__subtext">
-        Připravili jsme nabídku, kterou jinde nenajdeš. Zapíš
-        se&nbsp;na&nbsp;čekací listinu a&nbsp;odhalíš ji.
-      </p>
-      <a href="#waitlist" class="btn-gold offer__cta">Zapiš se na čekačku</a>
+      <span class="offer__label">{offer.label}</span>
+      <h2 class="offer__heading" set:html={offer.heading} />
+      <p class="offer__subtext" set:html={offer.subtext} />
+      <a href="#waitlist" class="btn-gold offer__cta">{offer.cta}</a>
       <div class="offer__urgency">
         <svg
           width="18"
@@ -26,8 +25,7 @@
           <circle cx="9" cy="9" r="7.5"></circle>
           <path d="M9 5v4l2.5 1.5"></path>
         </svg>
-        <span>Platí pouze po&nbsp;omezenou dobu. Počet kusů je limitovaný.</span
-        >
+        <span set:html={offer.urgency} />
       </div>
     </div>
   </div>
