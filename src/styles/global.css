@@ -1,0 +1,205 @@
+/* ========================================
+   Design Tokens
+   ======================================== */
+:root {
+  /* Colors */
+  --color-bg-primary: #080808;
+  --color-bg-secondary: #0F0F0F;
+  --color-bg-elevated: #161616;
+  --color-bg-input: #1A1A1A;
+  --color-gold: #D4A843;
+  --color-gold-light: #E8C462;
+  --color-gold-dark: #B8922E;
+  --color-gold-glow: rgba(212, 168, 67, 0.4);
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B0B0B0;
+  --color-text-muted: #666666;
+  --color-red: #E53E3E;
+  --color-red-muted: #9B2C2C;
+  --color-error: #E74C3C;
+  --color-success: #2ECC71;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', 'Georgia', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Spacing (8px base) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* Layout */
+  --max-width: 1200px;
+  --max-width-narrow: 600px;
+
+  /* Borders */
+  --border-gold: 1px solid rgba(212, 168, 67, 0.3);
+  --border-radius: 8px;
+
+  /* Transitions */
+  --transition-fast: 200ms ease;
+  --transition-medium: 400ms ease;
+  --transition-slow: 800ms ease;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+/* ========================================
+   Keyframes
+   ======================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--color-gold-glow); }
+  50% { box-shadow: 0 0 50px var(--color-gold-glow), 0 0 80px rgba(212, 168, 67, 0.15); }
+}
+
+@keyframes levitate {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ========================================
+   Scroll Animations
+   ======================================== */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.btn-gold {
+  display: inline-block;
+  background: var(--color-gold);
+  color: var(--color-bg-primary);
+  border: none;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition-fast),
+              transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.btn-gold:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px var(--color-gold-glow);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition-fast),
+              border-color var(--transition-fast),
+              color var(--transition-fast),
+              transform var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.btn-outline:hover {
+  background: rgba(212, 168, 67, 0.08);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}

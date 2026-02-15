@@ -1,0 +1,128 @@
+---
+
+---
+
+<!-- PRO NĚJ -->
+<section class="story story--him" id="story">
+  <div class="story__container animate-on-scroll">
+    <span class="story__badge">Pro něj</span>
+    <h2 class="story__name">Síla &amp; Charakter</h2>
+    <p class="story__text">
+      Představ si večer, kdy vstoupíš do&nbsp;místnosti a&nbsp;všichni to&nbsp;ucítí. Vůně, která říká víc než slova. Sebevědomí, které nepotřebuje vysvětlení.
+    </p>
+    <p class="story__evoke">
+      Hřejivé dřevo, špetka koření a&nbsp;něco, co&nbsp;nedokážou pojmenovat — ale&nbsp;nedokážou zapomenout.
+    </p>
+  </div>
+</section>
+
+<!-- PRO NI -->
+<section class="story story--her">
+  <div class="story__container animate-on-scroll">
+    <span class="story__badge story__badge--fem">Pro ni</span>
+    <h2 class="story__name">Elegance &amp; Smyslnost</h2>
+    <p class="story__text">
+      Ta&nbsp;vůně, po&nbsp;které se&nbsp;ohlédne. Jemná, a&nbsp;přesto nezapomenutelná. Pro&nbsp;ženu, která ví, že&nbsp;skutečná elegance nepotřebuje být hlasitá.
+    </p>
+    <p class="story__evoke story__evoke--fem">
+      Hedvábný květ, dotek vanilky a&nbsp;tajemství, které prozradíš jen tomu, kdo se&nbsp;přiblíží dost blízko.
+    </p>
+  </div>
+</section>
+
+<!-- EXCLUSIVE -->
+<section class="story story--exclusive">
+  <div class="story__container animate-on-scroll">
+    <p class="story__exclusive-text">
+      Tohle nekoupíš v&nbsp;žádné drogerii. Vůně pro ty, kteří se&nbsp;odmítají <strong>ztratit v&nbsp;davu</strong>.
+    </p>
+    <a href="#waitlist" class="btn-outline story__exclusive-cta">Chci být u&nbsp;toho</a>
+  </div>
+</section>
+
+<style>
+  .story {
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  .story--him {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .story--her {
+    background-color: var(--color-bg-primary);
+  }
+
+  .story--exclusive {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .story__container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .story__badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-bg-primary);
+    background: var(--color-gold);
+    padding: 0.35rem 1rem;
+    border-radius: 4px;
+    margin-bottom: var(--space-md);
+  }
+
+  .story__badge--fem {
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  }
+
+  .story__name {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+  }
+
+  .story__text {
+    color: var(--color-text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Evocative description */
+  .story__evoke {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-gold);
+    opacity: 0.7;
+    margin-top: var(--space-sm);
+  }
+
+  .story__evoke--fem {
+    color: var(--color-gold-light);
+  }
+
+  /* Exclusive callout */
+  .story__exclusive-text {
+    font-size: clamp(1.15rem, 3vw, 1.35rem);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .story__exclusive-text strong {
+    color: var(--color-gold);
+    font-weight: 700;
+  }
+
+  .story__exclusive-cta {
+    padding: 0.9rem 2.5rem;
+    font-size: 1rem;
+  }
+</style>

@@ -1,0 +1,371 @@
+---
+
+---
+
+<section class="waitlist" id="waitlist">
+  <div class="waitlist__container">
+    <div class="waitlist__card animate-on-scroll">
+      <h2 class="waitlist__heading">Zapište se na čekací listinu</h2>
+      <p class="waitlist__subtitle">
+        Zápis je zdarma a&nbsp;nezávazný. Budeme vás informovat o&nbsp;spuštění prodeje.
+      </p>
+
+      <form id="waitlist-form" class="waitlist__form" novalidate>
+        <div class="form-group">
+          <label>Mám zájem o</label>
+          <div class="fragrance-toggle">
+            <input type="radio" id="fragrance-him" name="fragrance" value="him" class="fragrance-toggle__input" />
+            <label for="fragrance-him" class="fragrance-toggle__label">Pro něj</label>
+            <input type="radio" id="fragrance-her" name="fragrance" value="her" class="fragrance-toggle__input" />
+            <label for="fragrance-her" class="fragrance-toggle__label">Pro ni</label>
+            <input type="radio" id="fragrance-both" name="fragrance" value="both" class="fragrance-toggle__input" />
+            <label for="fragrance-both" class="fragrance-toggle__label">Obojí</label>
+          </div>
+          <span class="error-message" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Jméno a příjmení</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            autocomplete="name"
+            placeholder="Jan Novák"
+          />
+          <span class="error-message" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="jan@email.cz"
+          />
+          <span class="error-message" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Telefon</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            autocomplete="tel"
+            inputmode="numeric"
+            placeholder="+420 123 456 789"
+          />
+          <span class="error-message" aria-live="polite"></span>
+        </div>
+
+        <button type="submit" class="btn-gold waitlist__submit">
+          Zapsat se zdarma
+        </button>
+      </form>
+
+      <p class="waitlist__note">Vaše údaje jsou v bezpečí. Žádný spam, slibujeme.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('waitlist-form') as HTMLFormElement;
+
+  const validators: Record<string, (v: string) => string> = {
+    name: (v) => v.trim().length >= 2 ? '' : 'Prosím zadejte své jméno.',
+    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Prosím zadejte platný e-mail.',
+    phone: (v) => /^(\+?\d[\d\s\-]{7,})$/.test(v.trim()) ? '' : 'Prosím zadejte platné telefonní číslo.',
+  };
+
+  function validateFragrance(): boolean {
+    const group = form.querySelector('.fragrance-toggle')!.parentElement!;
+    const error = group.querySelector('.error-message') as HTMLElement;
+    const checked = form.querySelector('input[name="fragrance"]:checked');
+    const message = checked ? '' : 'Prosím vyberte vůni.';
+    error.textContent = message;
+    return !message;
+  }
+
+  function validateField(input: HTMLInputElement) {
+    const validate = validators[input.name];
+    if (!validate) return true;
+
+    const error = input.parentElement!.querySelector('.error-message') as HTMLElement;
+    const message = validate(input.value);
+    error.textContent = message;
+    input.classList.toggle('invalid', !!message);
+    return !message;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    if (!validateFragrance()) isValid = false;
+
+    for (const field of Object.keys(validators)) {
+      const input = form.querySelector(`[name="${field}"]`) as HTMLInputElement;
+      if (!validateField(input)) isValid = false;
+    }
+
+    if (isValid) {
+      const fragrance = (form.querySelector('input[name="fragrance"]:checked') as HTMLInputElement).value;
+      const data = {
+        fragrance,
+        name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
+        email: (form.querySelector('[name="email"]') as HTMLInputElement).value,
+        phone: (form.querySelector('[name="phone"]') as HTMLInputElement).value,
+      };
+
+      // === MOCK SUBMISSION ===
+      // Replace this block with a fetch() call to your API endpoint:
+      //
+      // const response = await fetch('/api/waitlist', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(data),
+      // });
+      //
+      // Possible backends:
+      // - Astro API routes (add SSR adapter)
+      // - Netlify Forms (add data-netlify attribute to <form>)
+      // - Google Sheets via Apps Script
+      // - Supabase / Firebase
+      // === END MOCK ===
+
+      console.log('Waitlist submission:', data);
+
+      form.style.display = 'none';
+      const note = form.parentElement!.querySelector('.waitlist__note') as HTMLElement;
+      if (note) note.style.display = 'none';
+      const subtitle = form.parentElement!.querySelector('.waitlist__subtitle') as HTMLElement;
+      if (subtitle) subtitle.style.display = 'none';
+
+      const success = document.createElement('div');
+      success.className = 'success-message';
+      success.innerHTML = `
+        <p class="success-confirm">Jste na čekací listině!</p>
+        <div class="upsell">
+          <p class="upsell__text">Zarezervujte si parfém teď hned a&nbsp;získejte <strong>1&nbsp;+&nbsp;1 zdarma</strong></p>
+          <a href="#" class="btn-gold upsell__cta">Chci 2 parfémy za&nbsp;399&nbsp;Kč</a>
+          <span class="upsell__note">Nabídka platí jen teď.</span>
+        </div>
+      `;
+      form.parentElement!.insertBefore(success, form.nextSibling);
+    }
+  });
+
+  // Real-time validation on blur
+  for (const input of form.querySelectorAll('input')) {
+    input.addEventListener('blur', () => {
+      validateField(input as HTMLInputElement);
+    });
+  }
+</script>
+
+<style>
+  .waitlist {
+    padding: var(--space-2xl) var(--space-lg);
+    background-color: var(--color-bg-primary);
+  }
+
+  .waitlist__container {
+    max-width: var(--max-width-narrow);
+    margin: 0 auto;
+  }
+
+  .waitlist__card {
+    padding: var(--space-xl);
+    border: 2px solid rgba(212, 168, 67, 0.25);
+    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 168, 67, 0.04) 0%,
+      rgba(212, 168, 67, 0.01) 100%
+    );
+    text-align: center;
+  }
+
+  .waitlist__heading {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
+  .waitlist__subtitle {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .waitlist__subtitle strong {
+    color: var(--color-gold);
+    font-weight: 700;
+  }
+
+  .waitlist__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .fragrance-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--space-xs);
+  }
+
+  .fragrance-toggle__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .fragrance-toggle__label {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    border: 1px solid rgba(212, 168, 67, 0.2);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .fragrance-toggle__label:hover {
+    border-color: rgba(212, 168, 67, 0.4);
+  }
+
+  .fragrance-toggle__input:checked + .fragrance-toggle__label {
+    background: rgba(212, 168, 67, 0.12);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
+  .form-group {
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: var(--color-bg-input);
+    border: 1px solid rgba(212, 168, 67, 0.15);
+    border-radius: var(--border-radius);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .form-group input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+  }
+
+  .form-group input.invalid {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+  }
+
+  .error-message {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-error);
+    min-height: 1.2rem;
+    margin-top: var(--space-xs);
+  }
+
+  .waitlist__submit {
+    width: 100%;
+    margin-top: var(--space-sm);
+    padding: 1.2rem;
+    font-size: 1.25rem;
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .waitlist__note {
+    margin-top: var(--space-md);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Success state */
+  :global(.success-message) {
+    text-align: center;
+    padding: var(--space-md) 0;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  :global(.success-confirm) {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Upsell block */
+  :global(.upsell) {
+    padding: var(--space-lg);
+    border: 2px solid rgba(212, 168, 67, 0.4);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.06) 0%, rgba(212, 168, 67, 0.02) 100%);
+  }
+
+  :global(.upsell__text) {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    color: var(--color-text-primary);
+    line-height: 1.4;
+    margin-bottom: var(--space-lg);
+  }
+
+  :global(.upsell__text strong) {
+    color: var(--color-gold);
+    font-weight: 700;
+  }
+
+  :global(.upsell__cta) {
+    display: inline-block;
+    padding: 1.1rem 2.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    animation: pulse-glow 3s ease-in-out infinite;
+    margin-bottom: var(--space-sm);
+  }
+
+  :global(.upsell__note) {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-gold);
+    font-weight: 500;
+  }
+</style>

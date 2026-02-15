@@ -1,0 +1,291 @@
+---
+
+---
+
+<section class="value" id="value">
+  <div class="value__container">
+    <div class="value__intro animate-on-scroll">
+      <span class="value__label">Proč</span>
+      <h2 class="value__heading">Vůně, která změní tvůj den</h2>
+      <p class="value__subtext">
+        Znáš ten pocit, kdy se&nbsp;po&nbsp;tobě otočí a&nbsp;zeptají se: „Čím
+        to&nbsp;voníš?" Přesně o&nbsp;tom mluvím.
+      </p>
+    </div>
+
+    <div class="value__grid">
+      <div class="value__card animate-on-scroll">
+        <div class="value__card-header">
+          <div class="value__icon">
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path
+                d="M24 4C24 4 8 18 8 28C8 37 15 44 24 44C33 44 40 37 40 28C40 18 24 4 24 4Z"
+              ></path>
+              <path d="M24 36C28 36 32 33 32 28" opacity="0.5"></path>
+            </svg>
+          </div>
+          <h3 class="value__card-title">Lidé si tě zapamatují</h3>
+        </div>
+        <p class="value__card-text">
+          Tvoje vůně dorazí dřív než ty. A&nbsp;zůstane i&nbsp;po&nbsp;tvém
+          odchodu.
+        </p>
+      </div>
+
+      <div class="value__card animate-on-scroll">
+        <div class="value__card-header">
+          <div class="value__icon">
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <circle cx="24" cy="24" r="18"></circle>
+              <path d="M24 12V24L32 28"></path>
+            </svg>
+          </div>
+          <h3 class="value__card-title">Sebevědomí na 12 hodin</h3>
+        </div>
+        <p class="value__card-text">
+          Jedno stříknutí a&nbsp;všechny oči na tobě.
+        </p>
+      </div>
+
+      <div class="value__card animate-on-scroll">
+        <div class="value__card-header">
+          <div class="value__icon">
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path
+                d="M24 4L28.5 17H42L31 25.5L35 39L24 30L13 39L17 25.5L6 17H19.5L24 4Z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="value__card-title">Žádný kompromis</h3>
+        </div>
+        <p class="value__card-text">
+          Čistá přírodní kompozice. Nic, za&nbsp;co se musíš stydět.
+        </p>
+      </div>
+
+      <div class="value__card animate-on-scroll">
+        <div class="value__card-header">
+          <div class="value__icon">
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="var(--color-gold)"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <rect x="8" y="8" width="32" height="32" rx="4"></rect>
+              <path d="M16 24L22 30L34 18"></path>
+            </svg>
+          </div>
+          <h3 class="value__card-title">Tvoje tajná zbraň</h3>
+        </div>
+        <p class="value__card-text">
+          Nekoupíš v&nbsp;drogerii. Tohle nosí jen ti, co&nbsp;vědí.
+        </p>
+      </div>
+    </div>
+
+    <div class="value__price-anchor animate-on-scroll">
+      <div class="value__price-steps">
+        <div class="value__price-step">
+          <span class="value__price-step-label">Běžná cena</span>
+          <span class="value__price-market">2 000–4 000 Kč</span>
+        </div>
+        <div class="value__price-step">
+          <span class="value__price-step-label">Naše cena</span>
+          <span class="value__price-retail">1 299 Kč</span>
+        </div>
+        <div class="value__price-step value__price-step--highlight">
+          <span class="value__price-step-label">Cena dnes</span>
+          <span class="value__price-yours">399 Kč</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .value {
+    padding: var(--space-2xl) var(--space-lg);
+    background-color: var(--color-bg-primary);
+  }
+
+  .value__container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .value__intro {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .value__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: var(--space-md);
+    border: 1px solid rgba(212, 168, 67, 0.4);
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+  }
+
+  .value__heading {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .value__subtext {
+    color: var(--color-text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .value__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  @media (min-width: 600px) {
+    .value__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .value__card {
+    padding: var(--space-md);
+    border: 1px solid rgba(212, 168, 67, 0.15);
+    border-radius: 12px;
+    background: rgba(212, 168, 67, 0.02);
+    transition:
+      background var(--transition-medium),
+      border-color var(--transition-medium),
+      box-shadow var(--transition-medium);
+  }
+
+  .value__card:hover {
+    background: rgba(212, 168, 67, 0.05);
+    border-color: rgba(212, 168, 67, 0.3);
+    box-shadow: 0 4px 30px rgba(212, 168, 67, 0.08);
+  }
+
+  .value__card:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  .value__card:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  .value__card:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+
+  .value__card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .value__icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .value__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .value__card-title {
+    font-size: 1.3rem;
+    color: var(--color-gold);
+  }
+
+  .value__card-text {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  /* Price anchor */
+  .value__price-anchor {
+    text-align: center;
+    padding: var(--space-lg) 0 0;
+  }
+
+  .value__price-steps {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .value__price-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .value__price-step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .value__price-market {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+
+  .value__price-retail {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--color-text-secondary);
+  }
+
+  .value__price-step--highlight .value__price-step-label {
+    color: var(--color-gold);
+  }
+
+  .value__price-yours {
+    font-family: var(--font-heading);
+    font-size: clamp(3.5rem, 12vw, 5rem);
+    font-weight: 700;
+    color: var(--color-gold);
+    line-height: 1;
+  }
+</style>
