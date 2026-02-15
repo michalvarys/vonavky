@@ -47,10 +47,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     padding: var(--space-lg);
-    padding-top: 2rem;
+    padding-top: 15svh;
     position: relative;
     overflow: hidden;
   }
@@ -84,7 +84,7 @@
 
   .hero__content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 700px;
     will-change: transform;
   }
@@ -174,8 +174,8 @@
 
   .hero__bottle {
     position: relative;
-    z-index: 1;
-    margin-top: var(--space-md);
+    z-index: 0;
+    margin-top: -4rem;
     animation: fadeInUp 1s ease forwards;
     animation-delay: 1s;
     opacity: 0;
@@ -183,12 +183,11 @@
   }
 
   .hero__bottle-img {
-    width: 75vw;
-    max-width: 340px;
+    width: 70vw;
+    max-width: 320px;
     height: auto;
     display: block;
     filter: drop-shadow(0 0 60px rgba(212, 168, 67, 0.3));
-    animation: levitate 4s ease-in-out infinite;
   }
 
   .hero__scroll-hint {
@@ -318,8 +317,7 @@
 
     .hero__bottle {
       position: relative;
-      right: auto;
-      bottom: auto;
+      z-index: 1;
       margin-top: 0;
       animation-delay: 0.8s;
       flex: 0 0 auto;
@@ -328,7 +326,7 @@
     .hero__bottle-img {
       width: auto;
       max-width: none;
-      height: 70vh;
+      height: 86vh;
       animation: none;
       filter: drop-shadow(0 0 80px rgba(212, 168, 67, 0.35));
     }
