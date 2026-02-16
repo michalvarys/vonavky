@@ -9,9 +9,18 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
 ---
 
 <section class="waitlist" id="waitlist">
+  <img
+    src="hero-background-spray-effect-2.webp"
+    alt=""
+    class="waitlist__bg-mobile"
+    loading="lazy"
+    aria-hidden="true"
+    id="waitlist-bg-mobile"
+  />
   <div class="waitlist__container">
     <div
       class="waitlist__card animate-on-scroll"
+      style="transition-delay: 1.5s;"
       data-variant={variant}
       data-api-url={apiUrl}
       data-upsell-confirm={waitlist.upsell.confirm}
@@ -358,6 +367,45 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
       validateField(input as HTMLInputElement);
     });
   }
+
+  // --- Mobile: animate bg image slide-in, then reveal card ---
+  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+  if (isMobile) {
+    const section = document.getElementById("waitlist");
+    const bgMobile = document.getElementById("waitlist-bg-mobile");
+    // On mobile, prevent the global animate-on-scroll from controlling the card —
+    // we drive it ourselves after the image animation finishes.
+    card.classList.remove("animate-on-scroll");
+    card.style.opacity = "0";
+    card.style.transform = "translateY(30px)";
+
+    if (section && bgMobile) {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              // Step 1: slide in the background image
+              bgMobile.classList.add("is-visible");
+              // Step 2: after image animation ends, fade in the card
+              bgMobile.addEventListener(
+                "animationend",
+                () => {
+                  card.style.transition =
+                    "opacity 0.8s ease, transform 0.8s ease";
+                  card.style.opacity = "1";
+                  card.style.transform = "translateY(0)";
+                },
+                { once: true },
+              );
+              sectionObserver.unobserve(section);
+            }
+          }
+        },
+        { threshold: 0.95 },
+      );
+      sectionObserver.observe(section);
+    }
+  }
 </script>
 
 <style>
@@ -369,6 +417,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     align-items: center;
     justify-content: flex-end;
     min-height: 80vh;
+    overflow: hidden;
+    position: relative;
   }
 
   .waitlist__container {
@@ -641,16 +691,49 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     margin-top: 28px;
   }
 
+  /* Mobile background image – hidden on desktop */
+  .waitlist__bg-mobile {
+    display: none;
+  }
+
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(60%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
   @media (max-width: 640px) {
     .waitlist {
-      padding: 2.5rem 1rem;
+      padding: 0;
       justify-content: center;
       min-height: auto;
-      background-position: center bottom;
+      background: var(--color-bg-primary);
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .waitlist__bg-mobile {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      opacity: 0;
+      transform: translateX(60%);
+    }
+
+    .waitlist__bg-mobile.is-visible {
+      animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        forwards;
     }
 
     .waitlist__container {
       margin-right: auto;
+      padding: 2.5rem 1rem;
     }
 
     .waitlist__card {

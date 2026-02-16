@@ -209,20 +209,21 @@ const { hero } = Astro.props;
     z-index: 4;
     pointer-events: none;
     overflow: hidden;
-    will-change: transform;
-    transition: transform 0.2s ease-out;
   }
 
   :global(.hero-s__particle) {
     position: absolute;
     border-radius: 50%;
-    background: var(--p-color, rgba(222, 189, 84, var(--p-opacity, 0.5)));
-    box-shadow: 0 0 var(--p-glow, 6px) 2px
-      var(--p-glow-color, rgba(240, 208, 96, calc(var(--p-opacity, 0.5) * 0.5)));
+    background: radial-gradient(
+      circle at center,
+      var(--p-core) 0%,
+      var(--p-mid) 20%,
+      var(--p-edge) 60%,
+      transparent 100%
+    );
     animation: particleFloatS var(--p-dur, 18s) ease-in-out infinite;
     animation-delay: var(--p-delay, 0s);
     will-change: transform, opacity;
-    transition: transform 0.3s ease-out;
   }
 
   @keyframes particleFloatS {
@@ -473,59 +474,129 @@ const { hero } = Astro.props;
   ).matches;
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const isTablet = window.matchMedia("(min-width: 769px) and (max-width: 1023px)").matches;
 
   if (!prefersReducedMotion) {
     const container = document.querySelector(
       ".hero-s__particles",
     ) as HTMLElement;
 
-    // Color palette matching the spray image
+    // Gradient palette matching spray – warm orange/amber core, gold mid, fading edge
     const COLORS = [
-      {
-        bg: "rgba(222, 189, 84, OP)",
-        glow: "rgba(240, 208, 96, GL)",
-        glowSize: "6px",
-      }, // bright gold
-      {
-        bg: "rgba(255, 200, 60, OP)",
-        glow: "rgba(255, 215, 80, GL)",
-        glowSize: "8px",
-      }, // warm yellow
-      {
-        bg: "rgba(200, 155, 50, OP)",
-        glow: "rgba(220, 170, 60, GL)",
-        glowSize: "5px",
-      }, // deep gold
-      {
-        bg: "rgba(255, 170, 40, OP)",
-        glow: "rgba(255, 185, 50, GL)",
-        glowSize: "7px",
-      }, // amber/orange
-      {
-        bg: "rgba(180, 140, 60, OP)",
-        glow: "rgba(200, 160, 70, GL)",
-        glowSize: "4px",
-      }, // dark gold
-      {
-        bg: "rgba(255, 230, 150, OP)",
-        glow: "rgba(255, 240, 180, GL)",
-        glowSize: "10px",
-      }, // bright sparkle
+      { core: [255, 180, 60],  mid: [230, 130, 30],  edge: [180, 80, 10] },   // deep orange
+      { core: [255, 160, 40],  mid: [220, 110, 20],  edge: [160, 70, 10] },   // warm amber
+      { core: [255, 200, 80],  mid: [240, 160, 40],  edge: [200, 120, 20] },  // golden orange
+      { core: [255, 140, 30],  mid: [200, 90, 15],   edge: [150, 60, 5] },    // hot orange
+      { core: [255, 220, 120], mid: [222, 170, 60],  edge: [180, 120, 30] },  // bright gold
+      { core: [240, 120, 20],  mid: [180, 80, 10],   edge: [120, 50, 5] },    // burnt orange
+      { core: [255, 240, 180], mid: [255, 200, 80],  edge: [220, 160, 40] },  // light sparkle
+      { core: [255, 100, 20],  mid: [200, 60, 10],   edge: [140, 40, 5] },    // red-orange ember
     ];
 
-    const particles: HTMLElement[] = [];
+    interface Particle {
+      el: HTMLElement;
+      homeX: number; // home position in px
+      homeY: number;
+      offsetX: number; // current repulsion offset
+      offsetY: number;
+    }
+
+    const particles: Particle[] = [];
+    const REPEL_RADIUS = 150; // px – how far the "magnet" reaches
+    const REPEL_STRENGTH = 80; // px – max push distance
+    const EASE_BACK = 0.08; // how fast particles return (0-1)
+
+    let mouseXpx = -9999; // mouse position in px relative to container
+    let mouseYpx = -9999;
+    let isMouseInHero = false;
 
     if (container) {
-      const COUNT = isMobile ? 100 : 500;
+      const COUNT = isMobile ? 100 : isTablet ? 300 : 800;
+
+      const hero = document.querySelector(".hero-s") as HTMLElement;
+      const bgImg = document.querySelector(".hero-s__bg") as HTMLElement;
+      const productImg = document.querySelector(".hero-s__product") as HTMLElement;
+
+      // Nozzle position within the spray IMAGE (% of the image itself)
+      const IMG_NOZZLE_X = 0.62;
+      const IMG_NOZZLE_Y = 0.33;
+
+      // Get the visible spray image bounds relative to hero
+      function getImageBounds() {
+        const heroRect = hero.getBoundingClientRect();
+        // Desktop: __bg covers hero. Mobile/tablet: __product is visible
+        const useDesktop = bgImg && getComputedStyle(bgImg).display !== "none";
+        const img = useDesktop ? bgImg : productImg;
+        if (!img || getComputedStyle(img).display === "none") {
+          return { left: 0, top: 0, width: heroRect.width, height: heroRect.height };
+        }
+        const imgRect = img.getBoundingClientRect();
+        return {
+          left: imgRect.left - heroRect.left,
+          top: imgRect.top - heroRect.top,
+          width: imgRect.width,
+          height: imgRect.height,
+        };
+      }
+
+      function sprayPosition(): [number, number] {
+        const bounds = getImageBounds();
+        const heroW = hero.clientWidth;
+        const heroH = hero.clientHeight;
+
+        // Nozzle position in hero %
+        const nozzleXpct = ((bounds.left + bounds.width * IMG_NOZZLE_X) / heroW) * 100;
+        const nozzleYpct = ((bounds.top + bounds.height * IMG_NOZZLE_Y) / heroH) * 100;
+
+        // Image bounding box in hero %
+        const imgTopPct = (bounds.top / heroH) * 100;
+        const imgBottomPct = ((bounds.top + bounds.height) / heroH) * 100;
+        const imgLeftPct = (bounds.left / heroW) * 100;
+        const imgRightPct = ((bounds.left + bounds.width) / heroW) * 100;
+
+        // Max spray reach proportional to image size
+        const reachMax = (bounds.width / heroW) * 55;
+
+        // Floor reflection particles along the bottom of the image
+        if (Math.random() < 0.15) {
+          const floorY = imgBottomPct - (imgBottomPct - imgTopPct) * 0.15;
+          return [
+            imgLeftPct + Math.random() * (imgRightPct - imgLeftPct),
+            floorY + Math.random() * (imgBottomPct - floorY),
+          ];
+        }
+
+        // Generate spray cone position, reject if outside image bounds
+        for (let attempt = 0; attempt < 10; attempt++) {
+          const dist = Math.random();
+          const baseAngle = (200 * Math.PI) / 180;
+          const spread = 0.6 * dist + 0.15;
+          const angle = baseAngle + (Math.random() - 0.5) * spread * Math.PI;
+          const reach = dist * reachMax;
+
+          const x = nozzleXpct + Math.cos(angle) * reach;
+          const y = nozzleYpct + Math.sin(angle) * reach * 0.9;
+
+          // Only keep particles that fall within the image area
+          if (x >= imgLeftPct && x <= imgRightPct && y >= imgTopPct && y <= imgBottomPct) {
+            return [x, y];
+          }
+        }
+
+        // Fallback: place within image area near nozzle
+        return [
+          nozzleXpct + (Math.random() - 0.5) * 10,
+          nozzleYpct + (Math.random() - 0.5) * 10,
+        ];
+      }
 
       for (let i = 0; i < COUNT; i++) {
         const dot = document.createElement("div");
         dot.className = "hero-s__particle";
 
-        const size = 1 + Math.random() * 5;
-        const x = 5 + Math.random() * 92;
-        const y = 10 + Math.random() * 85;
-        const opacity = 0.2 + Math.random() * 0.6;
+        const [xPct, yPct] = sprayPosition();
+        const size = 4 + Math.random() * 12;
+        const opacity = 0.3 + Math.random() * 0.7;
         const duration = 12 + Math.random() * 14;
         const delay = -(Math.random() * duration);
 
@@ -536,75 +607,122 @@ const { hero } = Astro.props;
         const dx3 = (Math.random() - 0.5) * 60;
         const dy3 = -15 - Math.random() * 50;
 
-        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        const bgColor = color.bg.replace("OP", String(opacity));
-        const glowColor = color.glow.replace("GL", String(opacity * 0.5));
+        const c = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const core = `rgba(${c.core.join(",")}, ${opacity})`;
+        const mid = `rgba(${c.mid.join(",")}, ${opacity * 0.3})`;
+        const edge = `rgba(${c.edge.join(",")}, ${opacity * 0.05})`;
 
         dot.style.cssText = `
           width:${size}px;height:${size}px;
-          left:${x}%;top:${y}%;
-          --p-color:${bgColor};
-          --p-glow:${color.glowSize};
-          --p-glow-color:${glowColor};
+          left:${xPct}%;top:${yPct}%;
+          --p-core:${core};
+          --p-mid:${mid};
+          --p-edge:${edge};
           --p-opacity:${opacity};--p-dur:${duration}s;--p-delay:${delay}s;
           --p-dx1:${dx1}px;--p-dy1:${dy1}px;
           --p-dx2:${dx2}px;--p-dy2:${dy2}px;
           --p-dx3:${dx3}px;--p-dy3:${dy3}px;
         `;
 
-        (dot as any)._px = x;
-        (dot as any)._py = y;
-        particles.push(dot);
         container.appendChild(dot);
+        particles.push({
+          el: dot,
+          homeX: 0, // will be computed on first frame
+          homeY: 0,
+          offsetX: 0,
+          offsetY: 0,
+        });
       }
+
+      // Compute home positions once layout is ready
+      requestAnimationFrame(() => {
+        const rect = container.getBoundingClientRect();
+        for (const p of particles) {
+          const r = p.el.getBoundingClientRect();
+          p.homeX = r.left - rect.left + r.width / 2;
+          p.homeY = r.top - rect.top + r.height / 2;
+        }
+      });
     }
 
-    /* ---- Parallax on mouse move ---- */
-    const hero = document.querySelector(".hero-s") as HTMLElement;
+    /* ---- Animation loop for repulsion physics ---- */
+    const heroEl = document.querySelector(".hero-s") as HTMLElement;
     const bg = document.querySelector(".hero-s__bg") as HTMLElement;
     const rose = document.querySelector(".hero-s__rose") as HTMLElement;
 
-    if (hero && bg) {
-      const STRENGTH_BG = 20;
-      const STRENGTH_ROSE = 12;
-      const STRENGTH_PARTICLES = 30;
-      let mouseX = 0;
-      let mouseY = 0;
-      let rafId = 0;
+    const STRENGTH_BG = 20;
+    const STRENGTH_ROSE = 12;
+    let mouseNormX = 0; // -0.5 to 0.5 for parallax
+    let mouseNormY = 0;
 
-      function updateParallax() {
-        const bgX = mouseX * STRENGTH_BG;
-        const bgY = mouseY * STRENGTH_BG;
+    function tick() {
+      // Parallax for bg & rose
+      if (bg) {
+        const bgX = mouseNormX * STRENGTH_BG;
+        const bgY = mouseNormY * STRENGTH_BG;
         bg.style.transform = `translate(${bgX}px, ${bgY}px) scale(1.05)`;
+      }
+      if (rose) {
+        const roseX = mouseNormX * STRENGTH_ROSE * -1;
+        const roseY = mouseNormY * STRENGTH_ROSE * -1;
+        rose.style.transform = `translate(${roseX}px, ${roseY}px)`;
+      }
 
-        if (rose) {
-          const roseX = mouseX * STRENGTH_ROSE * -1;
-          const roseY = mouseY * STRENGTH_ROSE * -1;
-          rose.style.transform = `translate(${roseX}px, ${roseY}px)`;
+      // Repulsion physics for particles
+      for (const p of particles) {
+        if (isMouseInHero) {
+          const dx = p.homeX + p.offsetX - mouseXpx;
+          const dy = p.homeY + p.offsetY - mouseYpx;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < REPEL_RADIUS && dist > 0) {
+            const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
+            const angle = Math.atan2(dy, dx);
+            const targetX = Math.cos(angle) * force;
+            const targetY = Math.sin(angle) * force;
+            p.offsetX += (targetX - p.offsetX) * 0.15;
+            p.offsetY += (targetY - p.offsetY) * 0.15;
+          } else {
+            // Ease back to home
+            p.offsetX *= 1 - EASE_BACK;
+            p.offsetY *= 1 - EASE_BACK;
+          }
+        } else {
+          // Mouse left — ease everything back
+          p.offsetX *= 1 - EASE_BACK;
+          p.offsetY *= 1 - EASE_BACK;
         }
 
-        // Shift the whole particles container
-        if (container) {
-          const pX = mouseX * STRENGTH_PARTICLES;
-          const pY = mouseY * STRENGTH_PARTICLES;
-          container.style.transform = `translate(${pX}px, ${pY}px)`;
+        // Snap to zero when close enough
+        if (Math.abs(p.offsetX) < 0.1 && Math.abs(p.offsetY) < 0.1) {
+          p.offsetX = 0;
+          p.offsetY = 0;
+          p.el.style.translate = "";
+        } else {
+          p.el.style.translate = `${p.offsetX}px ${p.offsetY}px`;
         }
       }
 
-      hero.addEventListener("mousemove", (e) => {
-        const rect = hero.getBoundingClientRect();
-        mouseX = (e.clientX - rect.left) / rect.width - 0.5;
-        mouseY = (e.clientY - rect.top) / rect.height - 0.5;
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(updateParallax);
+      requestAnimationFrame(tick);
+    }
+
+    if (heroEl) {
+      heroEl.addEventListener("mousemove", (e: MouseEvent) => {
+        isMouseInHero = true;
+        const rect = heroEl.getBoundingClientRect();
+        mouseXpx = e.clientX - rect.left;
+        mouseYpx = e.clientY - rect.top;
+        mouseNormX = mouseXpx / rect.width - 0.5;
+        mouseNormY = mouseYpx / rect.height - 0.5;
       });
 
-      hero.addEventListener("mouseleave", () => {
-        mouseX = 0;
-        mouseY = 0;
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(updateParallax);
+      heroEl.addEventListener("mouseleave", () => {
+        isMouseInHero = false;
+        mouseNormX = 0;
+        mouseNormY = 0;
       });
+
+      requestAnimationFrame(tick);
     }
   }
 </script>
