@@ -86,8 +86,8 @@ export const content: SiteContent = {
       confirm: "Jsi na čekací listině!",
       text: "Zarezervuj si parfém teď hned a získej",
       highlight: "1 + 1 zdarma",
-      cta: "Chci 2 parfémy za 399 Kč",
-      note: "Nabídka platí jen teď.",
+      cta: "Chci 2 za 399 Kč",
+      note: "Nabídka platí jen omezenou dobu.",
     },
   },
   footer: {
