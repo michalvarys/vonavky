@@ -57,11 +57,11 @@ const { hero } = Astro.props;
     inset: 0;
     background: linear-gradient(
       to right,
-      var(--color-bg-primary) 0%,
-      rgba(8, 8, 8, 0.92) 25%,
-      rgba(8, 8, 8, 0.6) 45%,
-      rgba(8, 8, 8, 0.15) 65%,
-      transparent 80%
+      rgba(8, 8, 8, 0.85) 0%,
+      rgba(8, 8, 8, 0.6) 25%,
+      rgba(8, 8, 8, 0.25) 45%,
+      rgba(8, 8, 8, 0.05) 60%,
+      transparent 75%
     );
     pointer-events: none;
     z-index: 1;
@@ -74,10 +74,10 @@ const { hero } = Astro.props;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      var(--color-bg-primary) 0%,
-      transparent 15%,
-      transparent 85%,
-      var(--color-bg-primary) 100%
+      rgba(8, 8, 8, 0.4) 0%,
+      transparent 10%,
+      transparent 90%,
+      rgba(8, 8, 8, 0.4) 100%
     );
     pointer-events: none;
     z-index: 1;
@@ -231,13 +231,13 @@ const { hero } = Astro.props;
     }
   }
 
-  /* Mobile – fullscreen, text top-center, product bottom-right */
+  /* Mobile – fullscreen, text centered, product bottom */
   @media (max-width: 768px) {
     .hero-s {
-      display: grid;
-      grid-template-rows: 1fr auto;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-items: center;
+      justify-content: center;
       text-align: center;
       background: var(--color-bg-primary);
       min-height: 100svh;
@@ -254,9 +254,15 @@ const { hero } = Astro.props;
 
     .hero-s__content {
       padding: var(--space-lg);
+      padding-left: var(--space-lg);
       max-width: 100%;
+      width: 100%;
       z-index: 2;
       margin-bottom: 40%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .hero-s__subtitle {
@@ -290,11 +296,24 @@ const { hero } = Astro.props;
     }
   }
 
-  /* Tablet portrait (769px – 1023px) – product as absolute image, fullscreen */
+  /* Larger phones / small tablets – remove negative right offset */
+  @media (min-width: 700px) and (max-width: 768px) {
+    .hero-s__product {
+      right: 0;
+    }
+  }
+
+  /* Tablet portrait (769px – 1023px) – centered text, product bottom */
   @media (min-width: 769px) and (max-width: 1023px) {
     .hero-s {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       background: var(--color-bg-primary);
       min-height: 100svh;
+      position: relative;
     }
 
     .hero-s::before {
@@ -306,25 +325,45 @@ const { hero } = Astro.props;
     }
 
     .hero-s__content {
-      padding-left: 8%;
-      text-align: left;
-      max-width: 55%;
+      padding: var(--space-lg);
+      padding-left: var(--space-lg);
+      max-width: 100%;
+      width: 100%;
+      z-index: 2;
+      margin-bottom: 35%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-s__subtitle {
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .hero-s__product {
       display: block;
       position: absolute;
       bottom: 0;
-      right: -5%;
-      width: auto;
-      height: 75%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: auto;
       max-width: none;
       object-fit: contain;
-      object-position: right bottom;
+      object-position: center bottom;
     }
 
     .hero-s__scroll-hint {
-      left: 8%;
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .hero-s__scroll-hint:hover {
+      transform: translateX(-50%) translateY(4px);
     }
   }
 
