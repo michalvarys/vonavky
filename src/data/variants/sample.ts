@@ -43,7 +43,7 @@ export const content: SiteContent = {
   },
   value: {
     label: "Proč",
-    heading: "Vůně, která změní tvůj den",
+    heading: "Vůně, která ti změní náladu",
     subtext:
       'Znáš ten pocit, kdy se po tobě otočí a zeptají se: „Čím to voníš?" Přesně o tom mluvím.',
     cards: [
