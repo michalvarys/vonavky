@@ -7,6 +7,14 @@ const { hero } = Astro.props;
 ---
 
 <section class="hero-s">
+  <img
+    src="hero-background-spray-effect.webp"
+    alt={hero.imgAlt}
+    class="hero-s__bg"
+    loading="eager"
+    decoding="async"
+  />
+
   <div class="hero-s__content">
     <span class="hero-s__preheadline">{hero.preheadline}</span>
     <h1 class="hero-s__title">{hero.title}</h1>
@@ -20,6 +28,14 @@ const { hero } = Astro.props;
     class="hero-s__product"
     loading="eager"
     decoding="async"
+  />
+
+  <img
+    src="/roses.webp"
+    alt=""
+    class="hero-s__rose"
+    loading="eager"
+    aria-hidden="true"
   />
 
   <div class="hero-s__particles" aria-hidden="true"></div>
@@ -46,8 +62,22 @@ const { hero } = Astro.props;
     justify-content: flex-start;
     position: relative;
     overflow: hidden;
-    background: url("/hero-background-spray-effect.webp") 10% bottom / cover
-      no-repeat var(--color-bg-primary);
+    background: var(--color-bg-primary);
+  }
+
+  /* Parallax background spray – desktop only */
+  .hero-s__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 10% bottom;
+    z-index: 0;
+    will-change: transform;
+    transform: scale(1.05);
+    transition: transform 0.15s ease-out;
+    pointer-events: none;
   }
 
   /* Dark overlay for text readability on left side */
@@ -168,6 +198,8 @@ const { hero } = Astro.props;
     object-fit: contain;
     object-position: right bottom;
     filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.4));
+    will-change: transform;
+    transition: transform 0.15s ease-out;
   }
 
   /* ---- Particles ---- */
@@ -182,12 +214,13 @@ const { hero } = Astro.props;
   :global(.hero-s__particle) {
     position: absolute;
     border-radius: 50%;
-    background: rgba(222, 189, 84, var(--p-opacity, 0.5));
-    box-shadow: 0 0 6px 2px
-      rgba(240, 208, 96, calc(var(--p-opacity, 0.5) * 0.5));
+    background: var(--p-color, rgba(222, 189, 84, var(--p-opacity, 0.5)));
+    box-shadow: 0 0 var(--p-glow, 6px) 2px
+      var(--p-glow-color, rgba(240, 208, 96, calc(var(--p-opacity, 0.5) * 0.5)));
     animation: particleFloatS var(--p-dur, 18s) ease-in-out infinite;
     animation-delay: var(--p-delay, 0s);
     will-change: transform, opacity;
+    transition: transform 0.3s ease-out;
   }
 
   @keyframes particleFloatS {
@@ -247,9 +280,13 @@ const { hero } = Astro.props;
     }
   }
 
-  /* Mobile – hide rose */
+  /* Mobile – hide rose & bg, show product */
   @media (max-width: 768px) {
     .hero-s__rose {
+      display: none;
+    }
+
+    .hero-s__bg {
       display: none;
     }
   }
@@ -353,6 +390,10 @@ const { hero } = Astro.props;
       background: var(--color-bg-primary);
       min-height: 100svh;
       position: relative;
+    }
+
+    .hero-s__bg {
+      display: none;
     }
 
     .hero-s::before {
@@ -464,6 +505,39 @@ const { hero } = Astro.props;
         `;
         container.appendChild(dot);
       }
+    }
+
+    /* ---- Parallax on mouse move ---- */
+    const hero = document.querySelector(".hero-s") as HTMLElement;
+    const bg = document.querySelector(".hero-s__bg") as HTMLElement;
+    const rose = document.querySelector(".hero-s__rose") as HTMLElement;
+
+    if (hero && bg) {
+      const STRENGTH_BG = 20; // px max shift for spray
+      const STRENGTH_ROSE = 12; // px max shift for rose
+
+      hero.addEventListener("mousemove", (e) => {
+        const rect = hero.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        const bgX = x * STRENGTH_BG;
+        const bgY = y * STRENGTH_BG;
+        bg.style.transform = `translate(${bgX}px, ${bgY}px) scale(1.05)`;
+
+        if (rose) {
+          const roseX = x * STRENGTH_ROSE * -1; // opposite direction for depth
+          const roseY = y * STRENGTH_ROSE * -1;
+          rose.style.transform = `translate(${roseX}px, ${roseY}px)`;
+        }
+      });
+
+      hero.addEventListener("mouseleave", () => {
+        bg.style.transform = "translate(0, 0) scale(1.05)";
+        if (rose) {
+          rose.style.transform = "translate(0, 0)";
+        }
+      });
     }
   }
 </script>
