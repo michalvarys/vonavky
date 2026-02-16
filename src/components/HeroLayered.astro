@@ -54,6 +54,9 @@ const { hero } = Astro.props;
     <a href="#value" class="btn-gold hero-l__cta">{hero.cta}</a>
   </div>
 
+  <div class="hero-l__glow"></div>
+  <div class="hero-l__particles" aria-hidden="true"></div>
+
   <div class="hero-l__scroll-hint" aria-hidden="true">
     <svg
       width="24"
@@ -183,6 +186,79 @@ const { hero } = Astro.props;
     }
   }
 
+  /* ---- Golden glow ---- */
+  .hero-l__glow {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    margin-left: -300px;
+    background: radial-gradient(
+      circle,
+      rgba(212, 168, 67, 0.25) 0%,
+      rgba(212, 168, 67, 0.1) 35%,
+      transparent 65%
+    );
+    z-index: 2;
+    pointer-events: none;
+    animation: glowAppear 2s ease forwards;
+    animation-delay: 1.5s;
+    opacity: 0;
+  }
+
+  @keyframes glowAppear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes glowBreath {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.12); opacity: 0.75; }
+  }
+
+  /* ---- Particles ---- */
+  .hero-l__particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  :global(.hero-l__particle) {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(212, 168, 67, var(--p-opacity, 0.5));
+    box-shadow: 0 0 6px 2px rgba(212, 168, 67, calc(var(--p-opacity, 0.5) * 0.5));
+    animation: particleFloatL var(--p-dur, 18s) ease-in-out infinite;
+    animation-delay: var(--p-delay, 0s);
+    will-change: transform, opacity;
+  }
+
+  @keyframes particleFloatL {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--p-opacity, 0.5);
+    }
+    25% {
+      transform: translate(var(--p-dx1, 20px), var(--p-dy1, -50px)) scale(1.3);
+      opacity: calc(var(--p-opacity, 0.5) * 1.5);
+    }
+    50% {
+      transform: translate(var(--p-dx2, -15px), var(--p-dy2, -100px)) scale(0.7);
+      opacity: var(--p-opacity, 0.5);
+    }
+    75% {
+      transform: translate(var(--p-dx3, 10px), var(--p-dy3, -40px)) scale(1.2);
+      opacity: calc(var(--p-opacity, 0.5) * 0.8);
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--p-opacity, 0.5);
+    }
+  }
+
   /* ---- Dark overlay for text readability ---- */
   .hero-l__overlay {
     position: absolute;
@@ -202,7 +278,7 @@ const { hero } = Astro.props;
   /* ---- Content ---- */
   .hero-l__content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     max-width: 700px;
     padding: var(--space-lg);
     padding-top: clamp(3rem, 12vh, 8rem);
@@ -416,26 +492,36 @@ const { hero } = Astro.props;
   }
 
   /* ========================================
-     Desktop (≥ 1024px)
+     Desktop (≥ 1024px) – image right, content left
      ======================================== */
   @media (min-width: 1024px) {
+    .hero-l {
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+    }
+
     .hero-l__layers {
-      /* Full width, keep aspect-ratio, anchor to bottom */
-      width: 100%;
+      /* Anchor right, natural aspect ratio */
+      width: auto;
+      height: 100%;
       max-width: none;
-      left: 0;
+      left: auto;
       right: 0;
       transform: none;
       aspect-ratio: 1410 / 1182;
     }
 
-    .hero-l {
-      justify-content: flex-end;
+    .hero-l__content {
+      padding: var(--space-lg) 5% var(--space-lg) 12%;
+      padding-top: 0;
+      max-width: 55%;
     }
 
-    .hero-l__content {
-      padding-top: 0;
-      padding-bottom: calc(var(--space-2xl) + 1rem);
+    .hero-l__subtitle {
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: var(--space-lg);
     }
 
     .hero-l__preheadline {
@@ -447,24 +533,42 @@ const { hero } = Astro.props;
       margin-bottom: var(--space-sm);
     }
 
-    .hero-l__subtitle {
-      margin-bottom: var(--space-lg);
-    }
-
     .hero-l__cta {
       font-size: 1.2rem;
       padding: 1.2rem 3.5rem;
     }
 
     .hero-l__overlay {
-      background: linear-gradient(
-        to bottom,
-        var(--color-bg-primary) 0%,
-        rgba(8, 8, 8, 0.3) 12%,
-        rgba(8, 8, 8, 0.02) 30%,
-        rgba(8, 8, 8, 0.5) 60%,
-        rgba(8, 8, 8, 0.85) 100%
-      );
+      background:
+        /* top-bottom: fade from bg */
+        linear-gradient(
+          to bottom,
+          var(--color-bg-primary) 0%,
+          transparent 20%,
+          transparent 85%,
+          rgba(8, 8, 8, 0.6) 100%
+        ),
+        /* left-right: smooth fade from bg into image */
+          linear-gradient(
+            to right,
+            var(--color-bg-primary) 47%,
+            rgba(8, 8, 8, 0.9) 51%,
+            rgba(8, 8, 8, 0.6) 55%,
+            rgba(8, 8, 8, 0.25) 62%,
+            transparent 76%
+          );
+    }
+
+    .hero-l__glow {
+      left: 65%;
+      margin-left: -350px;
+      bottom: 30%;
+      width: 700px;
+      height: 700px;
+    }
+
+    .hero-l__scroll-hint {
+      left: 5%;
     }
   }
 </style>
@@ -491,6 +595,127 @@ const { hero } = Astro.props;
         span.className = "hero-l__title-char";
         span.style.animationDelay = `${2.2 + i * 0.04}s`;
         title.appendChild(span);
+      });
+    }
+
+    // Golden particles
+    if (!prefersReducedMotion) {
+      const container = hero.querySelector(".hero-l__particles") as HTMLElement;
+      const COUNT = 50;
+
+      for (let i = 0; i < COUNT; i++) {
+        const dot = document.createElement("div");
+        dot.className = "hero-l__particle";
+
+        const size = 1.5 + Math.random() * 4;
+        const x = 5 + Math.random() * 92;
+        const y = 10 + Math.random() * 85;
+        const opacity = 0.3 + Math.random() * 0.5;
+        const duration = 14 + Math.random() * 12;
+        const delay = -(Math.random() * duration);
+
+        const dx1 = (Math.random() - 0.5) * 70;
+        const dy1 = -20 - Math.random() * 70;
+        const dx2 = (Math.random() - 0.5) * 50;
+        const dy2 = -50 - Math.random() * 80;
+        const dx3 = (Math.random() - 0.5) * 60;
+        const dy3 = -15 - Math.random() * 50;
+
+        dot.style.cssText = `
+          width:${size}px;height:${size}px;
+          left:${x}%;top:${y}%;
+          --p-opacity:${opacity};--p-dur:${duration}s;--p-delay:${delay}s;
+          --p-dx1:${dx1}px;--p-dy1:${dy1}px;
+          --p-dx2:${dx2}px;--p-dy2:${dy2}px;
+          --p-dx3:${dx3}px;--p-dy3:${dy3}px;
+        `;
+        container.appendChild(dot);
+      }
+    }
+
+    // Shared glow scale state
+    let glowScale = 1;
+
+    // Glow breathing via JS (Astro scopes keyframe names)
+    const glow = hero.querySelector(".hero-l__glow") as HTMLElement;
+    if (glow && !prefersReducedMotion) {
+      let glowDir = 1;
+      glow.addEventListener("animationend", () => {
+        glow.style.opacity = "1";
+        glow.style.animation = "none";
+        const breathe = () => {
+          glowScale += glowDir * 0.0008;
+          if (glowScale > 1.12) glowDir = -1;
+          if (glowScale < 1) glowDir = 1;
+          // Only set transform when no parallax is running
+          if (!parallaxActive) {
+            glow.style.transform = `scale(${glowScale})`;
+          }
+          requestAnimationFrame(breathe);
+        };
+        breathe();
+      }, { once: true });
+    }
+
+    // Mouse parallax – desktop only
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isDesktop = window.innerWidth >= 1024;
+    let parallaxActive = false;
+
+    if (!prefersReducedMotion && !isTouchDevice && isDesktop) {
+      parallaxActive = true;
+      const layers = hero.querySelector(".hero-l__layers") as HTMLElement;
+      const content = hero.querySelector(".hero-l__content") as HTMLElement;
+
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+      let animId: number;
+      const LERP = 0.06;
+
+      hero.addEventListener(
+        "mousemove",
+        (e: MouseEvent) => {
+          const rect = hero.getBoundingClientRect();
+          targetX = (e.clientX - rect.left) / rect.width - 0.5;
+          targetY = (e.clientY - rect.top) / rect.height - 0.5;
+        },
+        { passive: true },
+      );
+
+      hero.addEventListener(
+        "mouseleave",
+        () => {
+          targetX = 0;
+          targetY = 0;
+        },
+        { passive: true },
+      );
+
+      function animate() {
+        mouseX += (targetX - mouseX) * LERP;
+        mouseY += (targetY - mouseY) * LERP;
+
+        layers.style.transform = `translate3d(${mouseX * 25}px, ${mouseY * 15}px, 0)`;
+        content.style.transform = `translate3d(${mouseX * -10}px, ${mouseY * -8}px, 0)`;
+
+        if (glow) {
+          glow.style.transform = `scale(${glowScale}) translate3d(${mouseX * 40}px, ${mouseY * 30}px, 0)`;
+        }
+
+        animId = requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animId);
+        } else {
+          animate();
+        }
       });
     }
   }
