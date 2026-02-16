@@ -3,13 +3,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
+      args:
+        PUBLIC_API_URL: https://vonavky-api.varyshop.eu
     image: varyshop/vonavky-web:latest
     ports:
       - "4321:4321"
     depends_on:
       - api
-    environment:
-      - PUBLIC_API_URL=http://api:3000
 
   api:
     build:
