@@ -1,0 +1,23 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - "8080:4321"
+    depends_on:
+      - api
+    environment:
+      - PUBLIC_API_URL=http://localhost:3000
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "3000:3000"
+    env_file:
+      - api/.env
+    environment:
+      - PORT=3000
+      - ALLOWED_ORIGINS=http://localhost:8080
