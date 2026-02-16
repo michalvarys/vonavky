@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.web
     image: varyshop/vonavky-web:latest
     ports:
-      - "8080:4321"
+      - "4321:4321"
     depends_on:
       - api
     environment:
@@ -17,9 +17,9 @@ services:
       dockerfile: Dockerfile.api
     image: varyshop/vonavky-api:latest
     ports:
-      - "3000:3000"
+      - "4322:3000"
     env_file:
       - api/.env
     environment:
       - PORT=3000
-      - ALLOWED_ORIGINS=http://localhost:8080
+      - ALLOWED_ORIGINS=http://localhost:8080,https://vonavky.varyshop.eu
