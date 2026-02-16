@@ -18,6 +18,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
       data-upsell-text={waitlist.upsell.text}
       data-upsell-highlight={waitlist.upsell.highlight}
       data-upsell-cta={waitlist.upsell.cta}
+      data-upsell-payment-link={waitlist.upsell.paymentLink}
       data-upsell-note={waitlist.upsell.note}
     >
       <h2 class="waitlist__heading">{waitlist.heading}</h2>
@@ -339,41 +340,15 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     showUpsell(data);
   });
 
-  // --- Upsell checkout — redirect to Stripe ---
-  document.addEventListener("click", async (e) => {
+  // --- Upsell checkout — redirect to Stripe payment link ---
+  document.addEventListener("click", (e) => {
     const btn = (e.target as HTMLElement).closest("#upsell-checkout");
-    if (!btn || !formData) return;
+    if (!btn) return;
     e.preventDefault();
 
-    (btn as HTMLButtonElement).disabled = true;
-    (btn as HTMLButtonElement).textContent = "Přesměrovávám…";
-
-    try {
-      const response = await fetch(`${API_URL}/api/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          variant,
-          productType: "double",
-          email: formData.email,
-          name: formData.name,
-          phone: formData.phone,
-          waitlistEntryId: waitlistEntryId ?? undefined,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.url) {
-        window.location.href = result.url;
-      } else {
-        throw new Error(result.error || "Chyba");
-      }
-    } catch (err) {
-      console.error("Checkout failed:", err);
-      (btn as HTMLButtonElement).disabled = false;
-      (btn as HTMLButtonElement).textContent =
-        card.dataset.upsellCta || "Zkusit znovu";
+    const paymentLink = card.dataset.upsellPaymentLink;
+    if (paymentLink) {
+      window.location.href = paymentLink;
     }
   });
 

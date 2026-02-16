@@ -4,8 +4,6 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { serve } from '@hono/node-server';
 import waitlistRoute from './routes/waitlist.js';
-import checkoutRoute from './routes/checkout.js';
-import webhookRoute from './routes/webhook.js';
 
 const app = new Hono();
 
@@ -26,8 +24,6 @@ app.get('/', (c) => c.json({ status: 'ok', service: 'vonavky-api' }));
 
 // Routes
 app.route('/api/waitlist', waitlistRoute);
-app.route('/api/checkout', checkoutRoute);
-app.route('/api/webhook', webhookRoute);
 
 // Global error handler
 app.onError((err, c) => {

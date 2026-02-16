@@ -13,7 +13,6 @@
     "@libsql/client": "^0.14.0",
     "dotenv": "^16.4.7",
     "hono": "^4.7.4",
-    "stripe": "^17.5.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

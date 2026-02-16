@@ -87,6 +87,7 @@ export const content: SiteContent = {
       text: "Zarezervuj si parfém předem a získej",
       highlight: "1 + 1 zdarma",
       cta: "Chci 2 za 399 Kč",
+      paymentLink: "https://buy.stripe.com/fZu00l5JzeIE8G9aAk2Nq05?locale=cs",
       note: "Nabídka platí jen omezenou dobu.",
     },
   },

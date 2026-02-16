@@ -8,14 +8,4 @@ export const waitlistSchema = z.object({
   phone: z.string().min(9),
 });
 
-export const checkoutSchema = z.object({
-  variant: z.string().min(1),
-  productType: z.enum(['single', 'double']),
-  email: z.string().email(),
-  name: z.string().min(2),
-  phone: z.string().min(9),
-  waitlistEntryId: z.number().optional(),
-});
-
 export type WaitlistInput = z.infer<typeof waitlistSchema>;
-export type CheckoutInput = z.infer<typeof checkoutSchema>;

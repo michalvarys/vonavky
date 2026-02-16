@@ -67,6 +67,7 @@ export interface SiteContent {
       highlight: string;
       cta: string;
       note: string;
+      paymentLink: string;
     };
   };
   footer: {
