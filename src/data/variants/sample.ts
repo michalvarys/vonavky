@@ -93,6 +93,7 @@ export const content: SiteContent = {
       cta: "Zaslat vzorek zdarma",
       paymentLink: "https://buy.stripe.com/dRm14p2xndEAcWp8sc2Nq06?locale=cs",
       note: "Nabídka platí jen omezenou dobu.",
+      showTimer: false,
     },
   },
   footer: {
