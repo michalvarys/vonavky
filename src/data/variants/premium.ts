@@ -9,9 +9,9 @@ export const content: SiteContent = {
   },
   hero: {
     preheadline: "Exkluzivní edice 2026",
-    title: "Aura Farm",
+    title: "Neodolatelná",
     subtitle:
-      "Vůně, po které se otočí. Jedno stříknutí a necháš stopu, na kterou jen tak nezapomenou.",
+      "Vůně za kterou se otáčí. Jedno stříknutí a nepujdeš vymazat z hlavy.",
     cta: "Zjistit víc",
     imgAlt: "Luxusní parfém – exkluzivní edice 2026",
   },
@@ -47,7 +47,7 @@ export const content: SiteContent = {
         text: "Tvoje vůně dorazí dřív než ty. A zůstane i po tvém odchodu.",
       },
       {
-        title: "Sebevědomí na 12 hodin",
+        title: "Sebevědomí na celý den",
         text: "Jedno stříknutí a všechny oči na tobě.",
       },
       {
@@ -72,9 +72,9 @@ export const content: SiteContent = {
     label: "Exkluzivní nabídka",
     heading: "Máme pro tebe něco speciálního",
     subtext:
-      "Připravili jsme nabídku, kterou jinde nenajdeš. Zapiš se na čekací listinu a odhalíš ji.",
+      "Připravili jsme nabídku která se nebude opakovat pro ty nejrychlejší.",
     cta: "Zapsat se a odhalit nabídku",
-    urgency: "Platí pouze po omezenou dobu. Počet kusů je limitovaný.",
+    urgency: "Platí pouze pro omezený počet lidí.",
   },
   waitlist: {
     heading: "Zapiš se na čekací listinu",
