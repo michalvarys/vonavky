@@ -296,13 +296,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 
   .waitlist__card {
     padding: var(--space-xl);
-    border: 2px solid rgba(212, 168, 67, 0.25);
+    border: 2px solid transparent;
     border-radius: 16px;
-    background: linear-gradient(
-      135deg,
-      rgba(212, 168, 67, 0.04) 0%,
-      rgba(212, 168, 67, 0.01) 100%
-    );
+    background:
+      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
+      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) border-box;
     text-align: center;
   }
 
@@ -352,7 +350,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--color-text-secondary);
-    border: 1px solid rgba(212, 168, 67, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: var(--border-radius);
     cursor: pointer;
     transition:
@@ -362,11 +360,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   }
 
   .fragrance-toggle__label:hover {
-    border-color: rgba(212, 168, 67, 0.4);
+    border-color: rgba(255, 215, 0, 0.4);
   }
 
   .fragrance-toggle__input:checked + .fragrance-toggle__label {
-    background: rgba(212, 168, 67, 0.12);
+    background: rgba(255, 215, 0, 0.12);
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
@@ -389,7 +387,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
     width: 100%;
     padding: 0.9rem 1rem;
     background: var(--color-bg-input);
-    border: 1px solid rgba(212, 168, 67, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.15);
     border-radius: var(--border-radius);
     color: var(--color-text-primary);
     font-family: var(--font-body);
@@ -406,7 +404,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   .form-group input:focus {
     outline: none;
     border-color: var(--color-gold);
-    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
   }
 
   .form-group input.invalid {
@@ -452,13 +450,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   /* Upsell block */
   :global(.upsell) {
     padding: var(--space-lg);
-    border: 2px solid rgba(212, 168, 67, 0.4);
+    border: 2px solid transparent;
     border-radius: 12px;
-    background: linear-gradient(
-      135deg,
-      rgba(212, 168, 67, 0.06) 0%,
-      rgba(212, 168, 67, 0.02) 100%
-    );
+    background:
+      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
+      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) border-box;
   }
 
   :global(.upsell__text) {

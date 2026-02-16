@@ -9,9 +9,9 @@ export const content: SiteContent = {
   },
   hero: {
     preheadline: "Limitovaná edice 2026",
-    title: "Zanech stopu",
+    title: "Aura farming",
     subtitle:
-      "Vůně, po\u00a0které se\u00a0otočí. Jedno stříknutí a\u00a0necháš stopu, na\u00a0kterou lidi kolem\u00a0jen tak nezapomenou.",
+      "Vůně, po které se otočí. Jedno stříknutí a necháš stopu, na kterou jen tak nezapomenou.",
     cta: "To mě zajímá",
     imgAlt: "Luxusní parfém – limitovaná edice 2026",
   },
@@ -19,44 +19,44 @@ export const content: SiteContent = {
     him: {
       badge: "Pro něj",
       name: "Síla & Charakter",
-      text: "Představ si večer, kdy vstoupíš do\u00a0místnosti a\u00a0všichni to\u00a0ucítí. Vůně, která říká víc než slova. Sebevědomí, které nepotřebuje vysvětlení.",
+      text: "Představ si večer, kdy vstoupíš do místnosti a všichni to ucítí. Vůně, která říká víc než slova. Sebevědomí, které nepotřebuje vysvětlení.",
       evoke:
-        "Hřejivé dřevo, špetka koření a\u00a0něco, co\u00a0nedokážou pojmenovat — ale\u00a0nedokážou zapomenout.",
+        "Hřejivé dřevo, špetka koření a něco, co nedokážou pojmenovat — ale nedokážou zapomenout.",
     },
     her: {
       badge: "Pro ni",
       name: "Elegance & Smyslnost",
-      text: "Ta\u00a0vůně, po\u00a0které se\u00a0ohlédne. Jemná, a\u00a0přesto nezapomenutelná. Pro\u00a0ženu, která ví, že\u00a0skutečná elegance nepotřebuje být hlasitá.",
+      text: "Ta vůně, po které se ohlédne. Jemná, a přesto nezapomenutelná. Pro ženu, která ví, že skutečná elegance nepotřebuje být hlasitá.",
       evoke:
-        "Hedvábný květ, dotek vanilky a\u00a0tajemství, které prozradíš jen tomu, kdo se\u00a0přiblíží dost blízko.",
+        "Hedvábný květ, dotek vanilky a tajemství, které prozradíš jen tomu, kdo se přiblíží dost blízko.",
     },
     exclusive: {
-      text: "Tohle nekoupíš v\u00a0žádné drogerii. Vůně pro ty, kteří se\u00a0odmítají",
-      highlight: "ztratit v\u00a0davu",
-      cta: "Chci být u\u00a0toho",
+      text: "Tohle nekoupíš v žádné drogerii. Vůně pro ty, kteří se odmítají",
+      highlight: "ztratit v davu",
+      cta: "Chci být u toho",
     },
   },
   value: {
     label: "Proč",
     heading: "Vůně, která změní tvůj den",
     subtext:
-      'Znáš ten pocit, kdy se\u00a0po\u00a0tobě otočí a\u00a0zeptají se: „Čím to\u00a0voníš?" Přesně o\u00a0tom mluvím.',
+      'Znáš ten pocit, kdy se po tobě otočí a zeptají se: „Čím to voníš?" Přesně o tom mluvím.',
     cards: [
       {
         title: "Lidé si tě zapamatují",
-        text: "Tvoje vůně dorazí dřív než ty. A\u00a0zůstane i\u00a0po\u00a0tvém odchodu.",
+        text: "Tvoje vůně dorazí dřív než ty. A zůstane i po tvém odchodu.",
       },
       {
         title: "Sebevědomí na 12 hodin",
-        text: "Jedno stříknutí a\u00a0všechny oči na tobě.",
+        text: "Jedno stříknutí a všechny oči na tobě.",
       },
       {
         title: "Žádný kompromis",
-        text: "Čistá přírodní kompozice. Nic, za\u00a0co se musíš stydět.",
+        text: "Čistá přírodní kompozice. Nic, za co se musíš stydět.",
       },
       {
         title: "Tvoje tajná zbraň",
-        text: "Nekoupíš v\u00a0drogerii. Tohle nosí jen ti, co\u00a0vědí.",
+        text: "Nekoupíš v drogerii. Tohle nosí jen ti, co vědí.",
       },
     ],
     pricing: {
@@ -72,21 +72,21 @@ export const content: SiteContent = {
     label: "Exkluzivní nabídka",
     heading: "Máme pro vás něco speciálního",
     subtext:
-      "Připravili jsme nabídku, kterou jinde nenajdete. Zapište se na\u00a0čekací listinu a\u00a0odhalíte ji.",
-    cta: "Zapsat se a\u00a0odhalit nabídku",
-    urgency: "Platí pouze po\u00a0omezenou dobu. Počet kusů je limitovaný.",
+      "Připravili jsme nabídku, kterou jinde nenajdete. Zapište se na čekací listinu a odhalíte ji.",
+    cta: "Zapsat se a odhalit nabídku",
+    urgency: "Platí pouze po omezenou dobu. Počet kusů je limitovaný.",
   },
   waitlist: {
     heading: "Zapište se na čekací listinu",
     subtitle:
-      "Zápis je zdarma a\u00a0nezávazný. Budeme vás informovat o\u00a0spuštění prodeje.",
+      "Zápis je zdarma a nezávazný. Budeme vás informovat o spuštění prodeje.",
     submit: "Zapsat se zdarma",
     note: "Vaše údaje jsou v bezpečí. Žádný spam, slibujeme.",
     upsell: {
       confirm: "Jste na čekací listině!",
-      text: "Zarezervujte si parfém teď hned a\u00a0získejte",
-      highlight: "1\u00a0+\u00a01 zdarma",
-      cta: "Chci 2 parfémy za\u00a0399\u00a0Kč",
+      text: "Zarezervujte si parfém teď hned a získejte",
+      highlight: "1 + 1 zdarma",
+      cta: "Chci 2 parfémy za 399 Kč",
       note: "Nabídka platí jen teď.",
     },
   },

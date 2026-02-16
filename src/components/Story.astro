@@ -64,7 +64,13 @@ const { story } = Astro.props;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--color-bg-primary);
-    background: var(--color-gold);
+    background: linear-gradient(
+      135deg,
+      var(--color-gold) 0%,
+      var(--color-gold-mid) 40%,
+      var(--color-gold-light) 70%,
+      var(--color-gold-mid) 100%
+    );
     padding: 0.35rem 1rem;
     border-radius: 4px;
     margin-bottom: var(--space-md);
@@ -73,8 +79,9 @@ const { story } = Astro.props;
   .story__badge--fem {
     background: linear-gradient(
       135deg,
-      var(--color-gold),
-      var(--color-gold-light)
+      var(--color-gold) 0%,
+      var(--color-gold-light) 50%,
+      var(--color-gold-mid) 100%
     );
   }
 

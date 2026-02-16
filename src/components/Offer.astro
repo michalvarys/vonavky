@@ -45,13 +45,11 @@ const { offer } = Astro.props;
   .offer__card {
     text-align: center;
     padding: var(--space-xl);
-    border: 2px solid rgba(212, 168, 67, 0.3);
+    border: 2px solid transparent;
     border-radius: 16px;
-    background: linear-gradient(
-      135deg,
-      rgba(212, 168, 67, 0.06) 0%,
-      rgba(212, 168, 67, 0.02) 100%
-    );
+    background:
+      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
+      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-mid), var(--color-gold-dark)) border-box;
   }
 
   .offer__label {
@@ -62,9 +60,12 @@ const { offer } = Astro.props;
     text-transform: uppercase;
     color: var(--color-gold);
     margin-bottom: var(--space-lg);
-    border: 1px solid rgba(212, 168, 67, 0.4);
+    border: 1px solid transparent;
     padding: 0.4rem 1.2rem;
     border-radius: 50px;
+    background:
+      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
+      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-dark)) border-box;
   }
 
   .offer__heading {

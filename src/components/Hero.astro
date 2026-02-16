@@ -65,7 +65,7 @@ const { hero } = Astro.props;
     height: 700px;
     background: radial-gradient(
       circle,
-      rgba(212, 168, 67, 0.12) 0%,
+      rgba(255, 215, 0, 0.12) 0%,
       transparent 65%
     );
     pointer-events: none;
@@ -78,7 +78,7 @@ const { hero } = Astro.props;
     height: 400px;
     background: radial-gradient(
       circle,
-      rgba(212, 168, 67, 0.06) 0%,
+      rgba(255, 215, 0, 0.06) 0%,
       transparent 70%
     );
   }
@@ -121,7 +121,7 @@ const { hero } = Astro.props;
     color: var(--color-text-primary);
     margin-bottom: var(--space-sm);
     opacity: 0;
-    text-shadow: 0 0 80px rgba(212, 168, 67, 0.08);
+    text-shadow: 0 0 80px rgba(255, 215, 0, 0.08);
   }
 
   /* Static fallback — replaced by JS char reveal on desktop */
@@ -174,8 +174,8 @@ const { hero } = Astro.props;
     position: relative;
     z-index: 3;
     box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.5),
-      0 4px 12px rgba(0, 0, 0, 0.3);
+      0 10px 30px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .hero__bottle {
@@ -193,7 +193,7 @@ const { hero } = Astro.props;
     max-width: 320px;
     height: auto;
     display: block;
-    filter: drop-shadow(0 0 60px rgba(212, 168, 67, 0.3));
+    filter: drop-shadow(0 0 60px rgba(255, 215, 0, 0.3));
   }
 
   .hero__scroll-hint {
@@ -237,7 +237,7 @@ const { hero } = Astro.props;
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(212, 168, 67, var(--p-opacity, 0.25)) 0%,
+      rgba(255, 215, 0, var(--p-opacity, 0.25)) 0%,
       transparent 70%
     );
     animation: particleFloat var(--p-dur, 20s) ease-in-out infinite;
@@ -334,7 +334,7 @@ const { hero } = Astro.props;
       max-width: none;
       height: 86vh;
       animation: none;
-      filter: drop-shadow(0 0 80px rgba(212, 168, 67, 0.35));
+      filter: drop-shadow(0 0 80px rgba(255, 215, 0, 0.35));
     }
 
     .hero__glow {
