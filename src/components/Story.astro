@@ -1,7 +1,15 @@
 ---
-import type { SiteContent } from '../data/content';
-interface Props { story: SiteContent['story'] }
+import type { SiteContent } from "../data/content";
+interface Props {
+  story: SiteContent["story"];
+}
 const { story } = Astro.props;
+
+function buildSampleLink(base: string, fragrance: string): string {
+  const url = new URL(base);
+  url.searchParams.set("fragrance", fragrance);
+  return url.toString();
+}
 ---
 
 <!-- PRO NĚJ -->
@@ -11,6 +19,16 @@ const { story } = Astro.props;
     <h2 class="story__name">{story.him.name}</h2>
     <p class="story__text" set:html={story.him.text} />
     <p class="story__evoke" set:html={story.him.evoke} />
+    {
+      story.sampleCta && story.samplePaymentLink && (
+        <a
+          href={buildSampleLink(story.samplePaymentLink, "him")}
+          class="btn-gold story__sample-cta"
+        >
+          {story.sampleCta}
+        </a>
+      )
+    }
   </div>
 </section>
 
@@ -21,18 +39,38 @@ const { story } = Astro.props;
     <h2 class="story__name" set:html={story.her.name} />
     <p class="story__text" set:html={story.her.text} />
     <p class="story__evoke story__evoke--fem" set:html={story.her.evoke} />
+    {
+      story.sampleCta && story.samplePaymentLink && (
+        <a
+          href={buildSampleLink(story.samplePaymentLink, "her")}
+          class="btn-gold story__sample-cta"
+        >
+          {story.sampleCta}
+        </a>
+      )
+    }
   </div>
 </section>
 
 <!-- EXCLUSIVE -->
-<section class="story story--exclusive">
-  <div class="story__container animate-on-scroll">
-    <p class="story__exclusive-text">
-      <Fragment set:html={story.exclusive.text} /> <strong><Fragment set:html={story.exclusive.highlight} /></strong>.
-    </p>
-    <a href="#waitlist" class="btn-outline story__exclusive-cta">{story.exclusive.cta}</a>
-  </div>
-</section>
+{
+  story.exclusive && (
+    <section class="story story--exclusive">
+      <div class="story__container animate-on-scroll">
+        <p class="story__exclusive-text">
+          <Fragment set:html={story.exclusive.text} />{" "}
+          <strong>
+            <Fragment set:html={story.exclusive.highlight} />
+          </strong>
+          .
+        </p>
+        <a href="#waitlist" class="btn-outline story__exclusive-cta">
+          {story.exclusive.cta}
+        </a>
+      </div>
+    </section>
+  )
+}
 
 <style>
   .story {
@@ -104,7 +142,12 @@ const { story } = Astro.props;
     font-style: italic;
     font-size: 1.05rem;
     line-height: 1.7;
-    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    background: linear-gradient(
+      135deg,
+      var(--color-gold),
+      var(--color-gold-light),
+      var(--color-gold-mid)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -113,10 +156,23 @@ const { story } = Astro.props;
   }
 
   .story__evoke--fem {
-    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold), var(--color-gold-mid));
+    background: linear-gradient(
+      135deg,
+      var(--color-gold-light),
+      var(--color-gold),
+      var(--color-gold-mid)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Sample CTA under him/her sections */
+  .story__sample-cta {
+    display: inline-block;
+    margin-top: var(--space-lg);
+    padding: 0.9rem 2.5rem;
+    font-size: 1rem;
   }
 
   /* Exclusive callout */
@@ -128,7 +184,12 @@ const { story } = Astro.props;
   }
 
   .story__exclusive-text strong {
-    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    background: linear-gradient(
+      135deg,
+      var(--color-gold),
+      var(--color-gold-light),
+      var(--color-gold-mid)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

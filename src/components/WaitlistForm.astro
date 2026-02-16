@@ -11,19 +11,19 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
 <section class="waitlist" id="waitlist">
   <div class="waitlist__scene" aria-hidden="true">
     <img
-      src="spray/bg.jpg"
+      src="spray/bg.webp"
       alt=""
       class="waitlist__layer waitlist__layer--bg"
       loading="lazy"
     />
     <img
-      src="spray/hand-parfume.png"
+      src="spray/hand-parfume.webp"
       alt=""
       class="waitlist__layer waitlist__layer--hand"
       loading="lazy"
     />
     <img
-      src="spray/spray.png"
+      src="spray/spray.webp"
       alt=""
       class="waitlist__layer waitlist__layer--spray"
       loading="lazy"
@@ -41,6 +41,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
       data-upsell-cta={waitlist.upsell.cta}
       data-upsell-payment-link={waitlist.upsell.paymentLink}
       data-upsell-note={waitlist.upsell.note}
+      data-upsell-show-timer={waitlist.upsell.showTimer !== false ? "true" : "false"}
     >
       <h2 class="waitlist__heading">{waitlist.heading}</h2>
       <p class="waitlist__subtitle" set:html={waitlist.subtitle} />
@@ -226,6 +227,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     const uHighlight = card.dataset.upsellHighlight || "";
     const uCta = card.dataset.upsellCta || "";
     const uNote = card.dataset.upsellNote || "";
+    const showTimer = card.dataset.upsellShowTimer !== "false";
 
     const remaining = Math.max(
       0,
@@ -233,23 +235,30 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     );
     const expired = remaining <= 0;
 
+    let countdownHtml = "";
+    if (showTimer) {
+      countdownHtml = expired
+        ? `<div class="upsell__countdown">Nabídka vypršela</div>`
+        : `<div class="upsell__countdown">Nabídka vyprší za <span class="upsell__timer">${formatTime(remaining)}</span></div>`;
+    }
+
+    const showCta = showTimer ? !expired : true;
+
     const success = document.createElement("div");
     success.className = "success-message";
     success.innerHTML = `
       <p class="success-confirm">${uConfirm}</p>
       <div class="upsell">
         <p class="upsell__text">${uText} <strong>${uHighlight}</strong></p>
-        <div class="upsell__countdown">
-          ${expired ? "Nabídka vypršela" : `Nabídka vyprší za <span class="upsell__timer">${formatTime(remaining)}</span>`}
-        </div>
-        ${expired ? "" : `<button type="button" class="btn-gold upsell__cta" id="upsell-checkout">${uCta}</button>`}
+        ${countdownHtml}
+        ${showCta ? `<button type="button" class="btn-gold upsell__cta" id="upsell-checkout">${uCta}</button>` : ""}
         <span class="upsell__note">${uNote}</span>
       </div>
     `;
     form.parentElement!.insertBefore(success, form.nextSibling);
 
-    // Start countdown if not expired
-    if (!expired) {
+    // Start countdown if timer is enabled and not expired
+    if (showTimer && !expired) {
       const timerEl = success.querySelector(".upsell__timer") as HTMLElement;
       if (timerEl) startCountdown(saved.signedUpAt, timerEl);
     }
@@ -555,8 +564,9 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
   }
 
   .waitlist__subtitle {
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-xl);
+    color: var(--color-text-primary);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-lg);
     font-size: 1.1rem;
     line-height: 1.7;
   }

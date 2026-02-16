@@ -93,4 +93,12 @@ export const content: SiteContent = {
   footer: {
     copyright: "© 2026 Aura+. Všechna práva vyhrazena.",
   },
+  sections: [
+    { name: "hero" },
+    { name: "value" },
+    { name: "offer" },
+    { name: "story" },
+    { name: "waitlist" },
+    { name: "footer" },
+  ],
 };

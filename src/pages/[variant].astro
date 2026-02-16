@@ -11,11 +11,6 @@ import Footer from '../components/Footer.astro';
 
 import type { SiteContent } from '../data/content';
 
-const variants = import.meta.glob<{ content: SiteContent }>(
-  '../data/variants/*.ts',
-  { eager: true },
-);
-
 export function getStaticPaths() {
   const modules = import.meta.glob<{ content: SiteContent }>(
     '../data/variants/*.ts',
@@ -31,18 +26,23 @@ export function getStaticPaths() {
 interface Props { content: SiteContent }
 const { content } = Astro.props;
 const { variant } = Astro.params;
+
+const sections = content.sections.filter(s => s.active !== false);
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
-  {content.heroVariant === 'layered'
-    ? <HeroLayered hero={content.hero} />
-    : content.heroVariant === 'spray'
-    ? <HeroSpray hero={content.hero} />
-    : <Hero hero={content.hero} />
-  }
-  <ValueProposition value={content.value} />
-  <Offer offer={content.offer} />
-  <Story story={content.story} />
-  <WaitlistForm waitlist={content.waitlist} variant={variant} />
-  <Footer footer={content.footer} />
+  {sections.map(s => {
+    if (s.name === 'hero') {
+      return content.heroVariant === 'layered'
+        ? <HeroLayered hero={content.hero} />
+        : content.heroVariant === 'spray'
+        ? <HeroSpray hero={content.hero} />
+        : <Hero hero={content.hero} />;
+    }
+    if (s.name === 'value') return <ValueProposition value={content.value} />;
+    if (s.name === 'offer') return <Offer offer={content.offer} />;
+    if (s.name === 'story') return <Story story={content.story} />;
+    if (s.name === 'waitlist') return <WaitlistForm waitlist={content.waitlist} variant={variant} />;
+    if (s.name === 'footer') return <Footer footer={content.footer} />;
+  })}
 </Layout>

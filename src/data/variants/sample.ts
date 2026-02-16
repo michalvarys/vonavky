@@ -5,14 +5,19 @@ export const content: SiteContent = {
   meta: {
     title: "Exkluzivní parfém | Exkluzivní edice 2026",
     description:
-      "Objev luxusní parfém vytvořený francouzskými parfuméry. Exkluzivní edice — zapiš se na čekací listinu a získej předprodejní cenu 399 Kč.",
+      "Objev luxusní parfém vytvořený francouzskými parfuméry. Exkluzivní edice — zapiš se na čekací listinu a získej vzorek zdarma.",
   },
   hero: {
     preheadline: "Exkluzivní edice 2026",
     title: "Neodolatelná",
     subtitle:
       "Vůně za kterou se otáčí. Jedno stříknutí a nepujdeš vymazat z hlavy.",
+    // cta: "Vzorek zdarma",
+    // ctaHref: "#waitlist",
     cta: "Zjistit víc",
+    ctaHref: "#story",
+    // ctaSecondary: "Zjistit víc",
+    // ctaSecondaryHref: "#story",
     imgAlt: "Luxusní parfém – exkluzivní edice 2026",
   },
   story: {
@@ -30,15 +35,15 @@ export const content: SiteContent = {
       evoke:
         "Hedvábný květ, dotek vanilky a tajemství, které prozradíš jen tomu, kdo se přiblíží dost blízko.",
     },
-    exclusive: {
-      text: "Tohle nekoupíš v žádné drogerii. Vůně pro ty, kteří se odmítají",
-      highlight: "ztratit v davu",
-      cta: "Chci být u toho",
-    },
+    // exclusive: {
+    //   text: "Tohle nekoupíš v žádné drogerii. Vůně pro ty, kteří se odmítají",
+    //   highlight: "ztratit v davu",
+    //   cta: "Chci to zkusit",
+    // },
   },
   value: {
     label: "Proč",
-    heading: "Vůně, která ti změní náladu",
+    heading: "Vůně, která změní tvůj den",
     subtext:
       'Znáš ten pocit, kdy se po tobě otočí a zeptají se: „Čím to voníš?" Přesně o tom mluvím.',
     cards: [
@@ -65,29 +70,28 @@ export const content: SiteContent = {
       retailLabel: "Naše cena",
       retailPrice: "1 299 Kč",
       yourLabel: "Cena pro tebe",
-      yourPrice: "399 Kč",
+      yourPrice: "ZDARMA",
     },
   },
   offer: {
     label: "Exkluzivní nabídka",
-    heading: "Máme pro tebe něco speciálního",
-    subtext:
-      "Připravili jsme nabídku která se nebude opakovat pro ty nejrychlejší.",
-    cta: "Zapsat se a odhalit nabídku",
+    heading: "Dnes si můžeš parfém zkusit zdarma",
+    subtext: "",
+    cta: "Získat vzorek zdarma",
     urgency: "Platí pouze pro omezený počet lidí.",
   },
   waitlist: {
-    heading: "Zapiš se na čekací listinu",
+    heading: "Zapiš se a získej vzorek zdarma",
     subtitle:
-      "Zápis je zdarma a nezávazný. Až budeš na řadě, můžeš se rozhodnout.",
+      "Zápis je nezávazný a zdarma. Tyto údaje jsou potřebné k doručení vašeho vzorku.",
     submit: "Zapsat se zdarma",
-    note: "Na tyto údaje ti pošleme informace spojené s nabídkou. ",
+    note: "Poštovné platí odběratel.",
     upsell: {
-      confirm: "Jsi na čekací listině!",
-      text: "Zarezervuj si parfém předem a získej",
-      highlight: "1 + 1 zdarma",
-      cta: "Chci 2 za 399 Kč",
-      paymentLink: "https://buy.stripe.com/fZu00l5JzeIE8G9aAk2Nq05?locale=cs",
+      confirm: "Už jen malý krůček!",
+      text: "Pro získání vzorku zdarma je potřeba pokrýt náklady na doručení a vyplnit adresu doručení.",
+      highlight: "",
+      cta: "Zaslat vzorek zdarma",
+      paymentLink: "https://buy.stripe.com/dRm14p2xndEAcWp8sc2Nq06?locale=cs",
       note: "Nabídka platí jen omezenou dobu.",
     },
   },
@@ -96,9 +100,9 @@ export const content: SiteContent = {
   },
   sections: [
     { name: "hero" },
-    { name: "value" },
-    { name: "offer" },
     { name: "story" },
+    { name: "value" },
+    // { name: "offer" },
     { name: "waitlist" },
     { name: "footer" },
   ],

@@ -1,4 +1,17 @@
-export type HeroVariant = 'default' | 'layered' | 'spray';
+export type HeroVariant = "default" | "layered" | "spray";
+
+export type SectionName =
+  | "hero"
+  | "value"
+  | "offer"
+  | "story"
+  | "waitlist"
+  | "footer";
+
+export interface SectionConfig {
+  name: SectionName;
+  active?: boolean; // default true
+}
 
 export interface SiteContent {
   meta: {
@@ -11,6 +24,9 @@ export interface SiteContent {
     title: string;
     subtitle: string;
     cta: string;
+    ctaHref?: string;
+    ctaSecondary?: string;
+    ctaSecondaryHref?: string;
     imgAlt: string;
   };
   story: {
@@ -26,11 +42,13 @@ export interface SiteContent {
       text: string;
       evoke: string;
     };
-    exclusive: {
+    exclusive?: {
       text: string;
       highlight: string;
       cta: string;
     };
+    sampleCta?: string;
+    samplePaymentLink?: string;
   };
   value: {
     label: string;
@@ -68,11 +86,13 @@ export interface SiteContent {
       cta: string;
       note: string;
       paymentLink: string;
+      showTimer?: boolean;
     };
   };
   footer: {
     copyright: string;
   };
+  sections: SectionConfig[];
 }
 
 export type VariantSlug = string;

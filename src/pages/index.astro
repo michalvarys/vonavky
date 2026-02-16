@@ -9,18 +9,23 @@ import Offer from '../components/Offer.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
 import Footer from '../components/Footer.astro';
 import { content } from '../data/variants/premium';
+
+const sections = content.sections.filter(s => s.active !== false);
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
-  {content.heroVariant === 'layered'
-    ? <HeroLayered hero={content.hero} />
-    : content.heroVariant === 'spray'
-    ? <HeroSpray hero={content.hero} />
-    : <Hero hero={content.hero} />
-  }
-  <ValueProposition value={content.value} />
-  <Offer offer={content.offer} />
-  <Story story={content.story} />
-  <WaitlistForm waitlist={content.waitlist} variant="premium" />
-  <Footer footer={content.footer} />
+  {sections.map(s => {
+    if (s.name === 'hero') {
+      return content.heroVariant === 'layered'
+        ? <HeroLayered hero={content.hero} />
+        : content.heroVariant === 'spray'
+        ? <HeroSpray hero={content.hero} />
+        : <Hero hero={content.hero} />;
+    }
+    if (s.name === 'value') return <ValueProposition value={content.value} />;
+    if (s.name === 'offer') return <Offer offer={content.offer} />;
+    if (s.name === 'story') return <Story story={content.story} />;
+    if (s.name === 'waitlist') return <WaitlistForm waitlist={content.waitlist} variant="premium" />;
+    if (s.name === 'footer') return <Footer footer={content.footer} />;
+  })}
 </Layout>
