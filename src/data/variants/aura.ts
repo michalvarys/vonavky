@@ -1,7 +1,7 @@
 import type { SiteContent } from "../content";
 
 export const content: SiteContent = {
-  heroVariant: 'layered',
+  heroVariant: "layered",
   meta: {
     title: "Aura+ | Limitovaná edice 2026",
     description:

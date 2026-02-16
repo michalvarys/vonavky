@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import HeroLayered from '../components/HeroLayered.astro';
+import HeroSpray from '../components/HeroSpray.astro';
 import Story from '../components/Story.astro';
 import ValueProposition from '../components/ValueProposition.astro';
 import Offer from '../components/Offer.astro';
@@ -35,6 +36,8 @@ const { variant } = Astro.params;
 <Layout title={content.meta.title} description={content.meta.description}>
   {content.heroVariant === 'layered'
     ? <HeroLayered hero={content.hero} />
+    : content.heroVariant === 'spray'
+    ? <HeroSpray hero={content.hero} />
     : <Hero hero={content.hero} />
   }
   <ValueProposition value={content.value} />

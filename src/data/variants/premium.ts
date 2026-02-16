@@ -1,7 +1,7 @@
 import type { SiteContent } from "../content";
 
 export const content: SiteContent = {
-  heroVariant: "layered",
+  heroVariant: "spray",
   meta: {
     title: "Exkluzivní parfém | Exkluzivní edice 2026",
     description:
@@ -9,7 +9,7 @@ export const content: SiteContent = {
   },
   hero: {
     preheadline: "Exkluzivní edice 2026",
-    title: "Aura farming",
+    title: "Aura Farm",
     subtitle:
       "Vůně, po které se otočí. Jedno stříknutí a necháš stopu, na kterou jen tak nezapomenou.",
     cta: "Zjistit víc",

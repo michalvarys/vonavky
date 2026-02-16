@@ -1,4 +1,4 @@
-export type HeroVariant = 'default' | 'layered';
+export type HeroVariant = 'default' | 'layered' | 'spray';
 
 export interface SiteContent {
   meta: {

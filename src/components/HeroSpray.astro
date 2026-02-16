@@ -1,0 +1,389 @@
+---
+import type { SiteContent } from "../data/content";
+interface Props {
+  hero: SiteContent["hero"];
+}
+const { hero } = Astro.props;
+---
+
+<section class="hero-s">
+  <div class="hero-s__content">
+    <span class="hero-s__preheadline">{hero.preheadline}</span>
+    <h1 class="hero-s__title">{hero.title}</h1>
+    <p class="hero-s__subtitle" set:html={hero.subtitle} />
+    <a href="#value" class="btn-gold hero-s__cta">{hero.cta}</a>
+  </div>
+
+  <img
+    src="hero-background-spray-effect.png"
+    alt={hero.imgAlt}
+    class="hero-s__product"
+    loading="eager"
+    decoding="async"
+  />
+
+  <div class="hero-s__particles" aria-hidden="true"></div>
+
+  <a href="#value" class="hero-s__scroll-hint" aria-label="Scroll down">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+    >
+      <path d="M12 5v14M5 12l7 7 7-7"></path>
+    </svg>
+  </a>
+</section>
+
+<style>
+  .hero-s {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+    background: url("/hero-background-spray-effect.png") 10% bottom / cover
+      no-repeat var(--color-bg-primary);
+  }
+
+  /* Dark overlay for text readability on left side */
+  .hero-s::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      var(--color-bg-primary) 0%,
+      rgba(8, 8, 8, 0.92) 25%,
+      rgba(8, 8, 8, 0.6) 45%,
+      rgba(8, 8, 8, 0.15) 65%,
+      transparent 80%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top/bottom vignette */
+  .hero-s::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--color-bg-primary) 0%,
+      transparent 15%,
+      transparent 85%,
+      var(--color-bg-primary) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-s__content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: var(--space-lg);
+    padding-left: 15%;
+  }
+
+  .hero-s__preheadline {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-dark) 0%,
+      var(--color-gold-light) 40%,
+      var(--color-gold) 60%,
+      var(--color-gold-dark) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation:
+      fadeInUp 0.8s ease forwards,
+      shimmer 3s ease-in-out infinite;
+    animation-delay: 0.3s, 0s;
+    opacity: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-s__title {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+  }
+
+  .hero-s__subtitle {
+    font-size: clamp(0.95rem, 2.5vw, 1.35rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.7s;
+    opacity: 0;
+    max-width: 480px;
+  }
+
+  .hero-s__cta {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.9s;
+    opacity: 0;
+    font-size: 1.1rem;
+    padding: 1rem 3rem;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Product image – hidden on desktop (visible via background), shown on mobile/tablet */
+  .hero-s__product {
+    display: none;
+  }
+
+  /* ---- Particles ---- */
+  .hero-s__particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  :global(.hero-s__particle) {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(222, 189, 84, var(--p-opacity, 0.5));
+    box-shadow: 0 0 6px 2px rgba(240, 208, 96, calc(var(--p-opacity, 0.5) * 0.5));
+    animation: particleFloatS var(--p-dur, 18s) ease-in-out infinite;
+    animation-delay: var(--p-delay, 0s);
+    will-change: transform, opacity;
+  }
+
+  @keyframes particleFloatS {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--p-opacity, 0.5);
+    }
+    25% {
+      transform: translate(var(--p-dx1, 20px), var(--p-dy1, -50px)) scale(1.3);
+      opacity: calc(var(--p-opacity, 0.5) * 1.5);
+    }
+    50% {
+      transform: translate(var(--p-dx2, -15px), var(--p-dy2, -100px)) scale(0.7);
+      opacity: var(--p-opacity, 0.5);
+    }
+    75% {
+      transform: translate(var(--p-dx3, 10px), var(--p-dy3, -40px)) scale(1.2);
+      opacity: calc(var(--p-opacity, 0.5) * 0.8);
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--p-opacity, 0.5);
+    }
+  }
+
+  .hero-s__scroll-hint {
+    position: absolute;
+    bottom: var(--space-lg);
+    left: 15%;
+    color: var(--color-gold);
+    z-index: 3;
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 1.2s;
+    opacity: 0;
+    cursor: pointer;
+    transition:
+      color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .hero-s__scroll-hint:hover {
+    color: var(--color-gold-light);
+    transform: translateY(4px);
+  }
+
+  .hero-s__scroll-hint svg {
+    animation: floatS 2s ease-in-out infinite;
+  }
+
+  @keyframes floatS {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  /* Mobile – fullscreen, text top-center, product bottom-right */
+  @media (max-width: 768px) {
+    .hero-s {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      background: var(--color-bg-primary);
+      min-height: 100svh;
+      position: relative;
+    }
+
+    .hero-s::before {
+      display: none;
+    }
+
+    .hero-s::after {
+      display: none;
+    }
+
+    .hero-s__content {
+      padding: var(--space-lg);
+      max-width: 100%;
+      z-index: 2;
+      margin-bottom: 40%;
+    }
+
+    .hero-s__subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-s__product {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      right: -15%;
+      width: auto;
+      height: 55%;
+      max-width: none;
+      padding: 0;
+      object-fit: contain;
+      object-position: right bottom;
+    }
+
+    .hero-s__scroll-hint {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+    }
+
+    .hero-s__scroll-hint:hover {
+      transform: translateX(-50%) translateY(4px);
+    }
+  }
+
+  /* Tablet portrait (769px – 1023px) – product as absolute image, fullscreen */
+  @media (min-width: 769px) and (max-width: 1023px) {
+    .hero-s {
+      background: var(--color-bg-primary);
+      min-height: 100svh;
+    }
+
+    .hero-s::before {
+      display: none;
+    }
+
+    .hero-s::after {
+      display: none;
+    }
+
+    .hero-s__content {
+      padding-left: 8%;
+      text-align: left;
+      max-width: 55%;
+    }
+
+    .hero-s__product {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      right: -5%;
+      width: auto;
+      height: 75%;
+      max-width: none;
+      object-fit: contain;
+      object-position: right bottom;
+    }
+
+    .hero-s__scroll-hint {
+      left: 8%;
+    }
+  }
+
+  /* Large desktop – more breathing room */
+  @media (min-width: 1200px) {
+    .hero-s__content {
+      padding-left: 25%;
+      max-width: 60vw;
+    }
+
+    .hero-s__preheadline {
+      font-size: 1rem;
+    }
+
+    .hero-s__cta {
+      font-size: 1.2rem;
+      padding: 1.2rem 3.5rem;
+    }
+  }
+</style>
+
+<script>
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (!prefersReducedMotion) {
+    const container = document.querySelector(".hero-s__particles") as HTMLElement;
+    if (container) {
+      const COUNT = 40;
+
+      for (let i = 0; i < COUNT; i++) {
+        const dot = document.createElement("div");
+        dot.className = "hero-s__particle";
+
+        const size = 1.5 + Math.random() * 4;
+        const x = 5 + Math.random() * 92;
+        const y = 10 + Math.random() * 85;
+        const opacity = 0.3 + Math.random() * 0.5;
+        const duration = 14 + Math.random() * 12;
+        const delay = -(Math.random() * duration);
+
+        const dx1 = (Math.random() - 0.5) * 70;
+        const dy1 = -20 - Math.random() * 70;
+        const dx2 = (Math.random() - 0.5) * 50;
+        const dy2 = -50 - Math.random() * 80;
+        const dx3 = (Math.random() - 0.5) * 60;
+        const dy3 = -15 - Math.random() * 50;
+
+        dot.style.cssText = `
+          width:${size}px;height:${size}px;
+          left:${x}%;top:${y}%;
+          --p-opacity:${opacity};--p-dur:${duration}s;--p-delay:${delay}s;
+          --p-dx1:${dx1}px;--p-dy1:${dy1}px;
+          --p-dx2:${dx2}px;--p-dy2:${dy2}px;
+          --p-dx3:${dx3}px;--p-dy3:${dy3}px;
+        `;
+        container.appendChild(dot);
+      }
+    }
+  }
+</script>

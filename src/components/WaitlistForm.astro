@@ -287,11 +287,16 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   .waitlist {
     padding: var(--space-2xl) var(--space-lg);
     background: url('/hero-background-spray-effect-2.png') center / cover no-repeat var(--color-bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 80vh;
   }
 
   .waitlist__container {
     max-width: var(--max-width-narrow);
-    margin: 0 auto;
+    width: 100%;
+    margin-right: 10%;
   }
 
   .waitlist__card {
@@ -497,6 +502,13 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   @media (max-width: 640px) {
     .waitlist {
       padding: 2.5rem 1rem;
+      justify-content: center;
+      min-height: auto;
+      background-position: center bottom;
+    }
+
+    .waitlist__container {
+      margin-right: auto;
     }
 
     .waitlist__card {
