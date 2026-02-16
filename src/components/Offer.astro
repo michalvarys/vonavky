@@ -53,19 +53,34 @@ const { offer } = Astro.props;
   }
 
   .offer__label {
+    position: relative;
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--space-lg);
-    border: 1px solid transparent;
     padding: 0.4rem 1.2rem;
     border-radius: 50px;
-    background:
-      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
-      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-dark)) border-box;
+    z-index: 0;
+  }
+
+  .offer__label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-dark));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
   .offer__heading {
@@ -98,9 +113,15 @@ const { offer } = Astro.props;
     justify-content: center;
     gap: 0.5rem;
     font-size: 0.85rem;
-    color: var(--color-gold);
     font-weight: 500;
     padding-top: var(--space-sm);
+  }
+
+  .offer__urgency span {
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   @media (max-width: 640px) {

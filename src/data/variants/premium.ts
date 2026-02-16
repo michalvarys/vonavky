@@ -3,17 +3,17 @@ import type { SiteContent } from "../content";
 export const content: SiteContent = {
   heroVariant: "layered",
   meta: {
-    title: "Exkluzivní parfém | Limitovaná edice 2026",
+    title: "Exkluzivní parfém | Exkluzivní edice 2026",
     description:
-      "Objevte luxusní parfém vytvořený francouzskými parfuméry. Limitovaná edice — zapište se na čekací listinu a získejte předprodejní cenu 399 Kč.",
+      "Objev luxusní parfém vytvořený francouzskými parfuméry. Exkluzivní edice — zapiš se na čekací listinu a získej předprodejní cenu 399 Kč.",
   },
   hero: {
-    preheadline: "Limitovaná edice 2026",
+    preheadline: "Exkluzivní edice 2026",
     title: "Aura farming",
     subtitle:
       "Vůně, po které se otočí. Jedno stříknutí a necháš stopu, na kterou jen tak nezapomenou.",
-    cta: "To mě zajímá",
-    imgAlt: "Luxusní parfém – limitovaná edice 2026",
+    cta: "Zjistit víc",
+    imgAlt: "Luxusní parfém – exkluzivní edice 2026",
   },
   story: {
     him: {
@@ -52,7 +52,7 @@ export const content: SiteContent = {
       },
       {
         title: "Žádný kompromis",
-        text: "Čistá přírodní kompozice. Nic, za co se musíš stydět.",
+        text: "Čísté složení. Kompozice z přírodních ingrediencí.",
       },
       {
         title: "Tvoje tajná zbraň",
@@ -64,27 +64,27 @@ export const content: SiteContent = {
       marketPrice: "2 000–4 000 Kč",
       retailLabel: "Naše cena",
       retailPrice: "1 299 Kč",
-      yourLabel: "Cena dnes",
+      yourLabel: "Cena pro tebe",
       yourPrice: "399 Kč",
     },
   },
   offer: {
     label: "Exkluzivní nabídka",
-    heading: "Máme pro vás něco speciálního",
+    heading: "Máme pro tebe něco speciálního",
     subtext:
-      "Připravili jsme nabídku, kterou jinde nenajdete. Zapište se na čekací listinu a odhalíte ji.",
+      "Připravili jsme nabídku, kterou jinde nenajdeš. Zapiš se na čekací listinu a odhalíš ji.",
     cta: "Zapsat se a odhalit nabídku",
     urgency: "Platí pouze po omezenou dobu. Počet kusů je limitovaný.",
   },
   waitlist: {
-    heading: "Zapište se na čekací listinu",
+    heading: "Zapiš se na čekací listinu",
     subtitle:
-      "Zápis je zdarma a nezávazný. Budeme vás informovat o spuštění prodeje.",
+      "Zápis je zdarma a nezávazný. Dáme ti vědět, až bude vše připravené.",
     submit: "Zapsat se zdarma",
-    note: "Vaše údaje jsou v bezpečí. Žádný spam, slibujeme.",
+    note: "Tvoje údaje jsou v bezpečí. Žádný spam, slibujeme.",
     upsell: {
-      confirm: "Jste na čekací listině!",
-      text: "Zarezervujte si parfém teď hned a získejte",
+      confirm: "Jsi na čekací listině!",
+      text: "Zarezervuj si parfém teď hned a získej",
       highlight: "1 + 1 zdarma",
       cta: "Chci 2 parfémy za 399 Kč",
       note: "Nabídka platí jen teď.",

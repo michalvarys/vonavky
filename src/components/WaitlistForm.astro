@@ -286,7 +286,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 <style>
   .waitlist {
     padding: var(--space-2xl) var(--space-lg);
-    background-color: var(--color-bg-primary);
+    background: url('/hero-background-spray-effect-2.png') center / cover no-repeat var(--color-bg-primary);
   }
 
   .waitlist__container {
@@ -321,7 +321,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   }
 
   .waitlist__subtitle strong {
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
   }
 
@@ -466,7 +469,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   }
 
   :global(.upsell__text strong) {
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
   }
 
@@ -481,7 +487,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
   :global(.upsell__note) {
     display: block;
     font-size: 0.85rem;
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 500;
   }
 

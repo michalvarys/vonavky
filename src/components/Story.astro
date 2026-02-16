@@ -104,13 +104,19 @@ const { story } = Astro.props;
     font-style: italic;
     font-size: 1.05rem;
     line-height: 1.7;
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     opacity: 0.7;
     margin-top: var(--space-sm);
   }
 
   .story__evoke--fem {
-    color: var(--color-gold-light);
+    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   /* Exclusive callout */
@@ -122,7 +128,10 @@ const { story } = Astro.props;
   }
 
   .story__exclusive-text strong {
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
   }
 

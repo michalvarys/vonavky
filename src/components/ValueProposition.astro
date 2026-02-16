@@ -71,19 +71,34 @@ const icons = [
   }
 
   .value__label {
+    position: relative;
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--space-md);
-    border: 1px solid transparent;
     padding: 0.4rem 1.2rem;
     border-radius: 50px;
-    background:
-      linear-gradient(var(--color-bg-primary), var(--color-bg-primary)) padding-box,
-      linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-dark)) border-box;
+    z-index: 0;
+  }
+
+  .value__label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light), var(--color-gold-dark));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
   .value__heading {
@@ -191,7 +206,10 @@ const icons = [
 
   .value__card-title {
     font-size: 1.3rem;
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .value__card-text {
@@ -244,14 +262,21 @@ const icons = [
   }
 
   .value__price-step--highlight .value__price-step-label {
-    color: var(--color-gold);
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .value__price-yours {
     font-family: var(--font-heading);
     font-size: clamp(3.5rem, 12vw, 5rem);
     font-weight: 700;
-    color: var(--color-gold);
-    line-height: 1;
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light), var(--color-gold-mid));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    padding-bottom: 0.05em;
   }
 </style>

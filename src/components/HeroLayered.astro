@@ -57,7 +57,7 @@ const { hero } = Astro.props;
   <div class="hero-l__glow"></div>
   <div class="hero-l__particles" aria-hidden="true"></div>
 
-  <div class="hero-l__scroll-hint" aria-hidden="true">
+  <a href="#value" class="hero-l__scroll-hint" aria-label="Scroll down">
     <svg
       width="24"
       height="24"
@@ -68,7 +68,7 @@ const { hero } = Astro.props;
     >
       <path d="M12 5v14M5 12l7 7 7-7"></path>
     </svg>
-  </div>
+  </a>
 </section>
 
 <style>
@@ -376,10 +376,17 @@ const { hero } = Astro.props;
     position: absolute;
     bottom: var(--space-lg);
     color: var(--color-gold);
-    z-index: 2;
+    z-index: 3;
     animation: fadeInUp 0.8s ease forwards;
     animation-delay: 1.8s;
     opacity: 0;
+    cursor: pointer;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .hero-l__scroll-hint:hover {
+    color: var(--color-gold-light);
+    transform: translateY(4px);
   }
 
   .hero-l__scroll-hint svg {
