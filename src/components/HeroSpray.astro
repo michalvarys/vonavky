@@ -30,14 +30,6 @@ const { hero } = Astro.props;
     decoding="async"
   />
 
-  <img
-    src="/roses.webp"
-    alt=""
-    class="hero-s__rose"
-    loading="eager"
-    aria-hidden="true"
-  />
-
   <div class="hero-s__particles" aria-hidden="true"></div>
 
   <a href="#value" class="hero-s__scroll-hint" aria-label="Scroll down">
@@ -474,7 +466,9 @@ const { hero } = Astro.props;
   ).matches;
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  const isTablet = window.matchMedia("(min-width: 769px) and (max-width: 1023px)").matches;
+  const isTablet = window.matchMedia(
+    "(min-width: 769px) and (max-width: 1023px)",
+  ).matches;
 
   if (!prefersReducedMotion) {
     const container = document.querySelector(
@@ -483,14 +477,14 @@ const { hero } = Astro.props;
 
     // Gradient palette matching spray – warm orange/amber core, gold mid, fading edge
     const COLORS = [
-      { core: [255, 180, 60],  mid: [230, 130, 30],  edge: [180, 80, 10] },   // deep orange
-      { core: [255, 160, 40],  mid: [220, 110, 20],  edge: [160, 70, 10] },   // warm amber
-      { core: [255, 200, 80],  mid: [240, 160, 40],  edge: [200, 120, 20] },  // golden orange
-      { core: [255, 140, 30],  mid: [200, 90, 15],   edge: [150, 60, 5] },    // hot orange
-      { core: [255, 220, 120], mid: [222, 170, 60],  edge: [180, 120, 30] },  // bright gold
-      { core: [240, 120, 20],  mid: [180, 80, 10],   edge: [120, 50, 5] },    // burnt orange
-      { core: [255, 240, 180], mid: [255, 200, 80],  edge: [220, 160, 40] },  // light sparkle
-      { core: [255, 100, 20],  mid: [200, 60, 10],   edge: [140, 40, 5] },    // red-orange ember
+      { core: [255, 180, 60], mid: [230, 130, 30], edge: [180, 80, 10] }, // deep orange
+      { core: [255, 160, 40], mid: [220, 110, 20], edge: [160, 70, 10] }, // warm amber
+      { core: [255, 200, 80], mid: [240, 160, 40], edge: [200, 120, 20] }, // golden orange
+      { core: [255, 140, 30], mid: [200, 90, 15], edge: [150, 60, 5] }, // hot orange
+      { core: [255, 220, 120], mid: [222, 170, 60], edge: [180, 120, 30] }, // bright gold
+      { core: [240, 120, 20], mid: [180, 80, 10], edge: [120, 50, 5] }, // burnt orange
+      { core: [255, 240, 180], mid: [255, 200, 80], edge: [220, 160, 40] }, // light sparkle
+      { core: [255, 100, 20], mid: [200, 60, 10], edge: [140, 40, 5] }, // red-orange ember
     ];
 
     interface Particle {
@@ -515,7 +509,9 @@ const { hero } = Astro.props;
 
       const hero = document.querySelector(".hero-s") as HTMLElement;
       const bgImg = document.querySelector(".hero-s__bg") as HTMLElement;
-      const productImg = document.querySelector(".hero-s__product") as HTMLElement;
+      const productImg = document.querySelector(
+        ".hero-s__product",
+      ) as HTMLElement;
 
       // Nozzle position within the spray IMAGE (% of the image itself)
       const IMG_NOZZLE_X = 0.62;
@@ -528,7 +524,12 @@ const { hero } = Astro.props;
         const useDesktop = bgImg && getComputedStyle(bgImg).display !== "none";
         const img = useDesktop ? bgImg : productImg;
         if (!img || getComputedStyle(img).display === "none") {
-          return { left: 0, top: 0, width: heroRect.width, height: heroRect.height };
+          return {
+            left: 0,
+            top: 0,
+            width: heroRect.width,
+            height: heroRect.height,
+          };
         }
         const imgRect = img.getBoundingClientRect();
         return {
@@ -545,8 +546,10 @@ const { hero } = Astro.props;
         const heroH = hero.clientHeight;
 
         // Nozzle position in hero %
-        const nozzleXpct = ((bounds.left + bounds.width * IMG_NOZZLE_X) / heroW) * 100;
-        const nozzleYpct = ((bounds.top + bounds.height * IMG_NOZZLE_Y) / heroH) * 100;
+        const nozzleXpct =
+          ((bounds.left + bounds.width * IMG_NOZZLE_X) / heroW) * 100;
+        const nozzleYpct =
+          ((bounds.top + bounds.height * IMG_NOZZLE_Y) / heroH) * 100;
 
         // Image bounding box in hero %
         const imgTopPct = (bounds.top / heroH) * 100;
@@ -578,7 +581,12 @@ const { hero } = Astro.props;
           const y = nozzleYpct + Math.sin(angle) * reach * 0.9;
 
           // Only keep particles that fall within the image area
-          if (x >= imgLeftPct && x <= imgRightPct && y >= imgTopPct && y <= imgBottomPct) {
+          if (
+            x >= imgLeftPct &&
+            x <= imgRightPct &&
+            y >= imgTopPct &&
+            y <= imgBottomPct
+          ) {
             return [x, y];
           }
         }
