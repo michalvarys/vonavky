@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
+    image: varyshop/vonavky-web:latest
     ports:
       - "8080:4321"
     depends_on:
@@ -14,6 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
+    image: varyshop/vonavky-api:latest
     ports:
       - "3000:3000"
     env_file:

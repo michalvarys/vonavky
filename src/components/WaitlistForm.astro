@@ -9,14 +9,26 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
 ---
 
 <section class="waitlist" id="waitlist">
-  <img
-    src="hero-background-spray-effect-2.webp"
-    alt=""
-    class="waitlist__bg-mobile"
-    loading="lazy"
-    aria-hidden="true"
-    id="waitlist-bg-mobile"
-  />
+  <div class="waitlist__scene" aria-hidden="true">
+    <img
+      src="spray/bg.jpg"
+      alt=""
+      class="waitlist__layer waitlist__layer--bg"
+      loading="lazy"
+    />
+    <img
+      src="spray/hand-parfume.png"
+      alt=""
+      class="waitlist__layer waitlist__layer--hand"
+      loading="lazy"
+    />
+    <img
+      src="spray/spray.png"
+      alt=""
+      class="waitlist__layer waitlist__layer--spray"
+      loading="lazy"
+    />
+  </div>
   <div class="waitlist__container">
     <div
       class="waitlist__card animate-on-scroll"
@@ -368,51 +380,65 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     });
   }
 
-  // --- Mobile: animate bg image slide-in, then reveal card ---
+  // --- Animated reveal: hand -> spray -> card (same on desktop & mobile) ---
   const isMobile = window.matchMedia("(max-width: 640px)").matches;
-  if (isMobile) {
-    const section = document.getElementById("waitlist");
-    const bgMobile = document.getElementById("waitlist-bg-mobile");
-    // On mobile, prevent the global animate-on-scroll from controlling the card —
-    // we drive it ourselves after the image animation finishes.
-    card.classList.remove("animate-on-scroll");
-    card.style.opacity = "0";
-    card.style.transform = "translateY(30px)";
+  const section = document.getElementById("waitlist");
 
-    if (section && bgMobile) {
-      const sectionObserver = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              // Step 1: slide in the background image
-              bgMobile.classList.add("is-visible");
-              // Step 2: after image animation ends, fade in the card
-              bgMobile.addEventListener(
+  // Take over card animation from global animate-on-scroll
+  card.classList.remove("animate-on-scroll");
+  card.style.opacity = "0";
+  card.style.transform = "translateY(30px)";
+
+  function revealCard() {
+    card.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+    card.style.opacity = "1";
+    card.style.transform = "translateY(0)";
+  }
+
+  if (section) {
+    const handLayer = section.querySelector(
+      ".waitlist__layer--hand",
+    ) as HTMLElement;
+    const sprayLayer = section.querySelector(
+      ".waitlist__layer--spray",
+    ) as HTMLElement;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // Step 1: hand slides in from left
+            if (handLayer) handLayer.classList.add("is-visible");
+            // Step 2: after hand finishes, spray reveals from left with blur
+            if (handLayer && sprayLayer) {
+              handLayer.addEventListener(
                 "animationend",
                 () => {
-                  card.style.transition =
-                    "opacity 0.8s ease, transform 0.8s ease";
-                  card.style.opacity = "1";
-                  card.style.transform = "translateY(0)";
+                  sprayLayer.classList.add("is-visible");
+                  // Step 3: after spray finishes, reveal card
+                  sprayLayer.addEventListener("animationend", revealCard, {
+                    once: true,
+                  });
                 },
                 { once: true },
               );
-              sectionObserver.unobserve(section);
+            } else {
+              revealCard();
             }
+            obs.unobserve(section);
           }
-        },
-        { threshold: 0.95 },
-      );
-      sectionObserver.observe(section);
-    }
+        }
+      },
+      { threshold: 0.3 },
+    );
+    obs.observe(section);
   }
 </script>
 
 <style>
   .waitlist {
     padding: var(--space-2xl) var(--space-lg);
-    background: url("/hero-background-spray-effect-2.webp") center / cover
-      no-repeat var(--color-bg-primary);
+    background: var(--color-bg-primary);
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -421,7 +447,81 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     position: relative;
   }
 
+  /* --- Desktop layered scene --- */
+  .waitlist__scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .waitlist__layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .waitlist__layer--bg {
+    z-index: 0;
+  }
+
+  .waitlist__layer--hand {
+    z-index: 1;
+    object-position: left center;
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  .waitlist__layer--hand.is-visible {
+    animation: handReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .waitlist__layer--spray {
+    z-index: 2;
+    object-position: center center;
+    opacity: 0;
+    filter: blur(25px);
+    transform: translateX(-80px);
+  }
+
+  .waitlist__layer--spray.is-visible {
+    animation: sprayReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  @keyframes handReveal {
+    0% {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes sprayReveal {
+    0% {
+      opacity: 0;
+      filter: blur(25px);
+      transform: translateX(-80px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(10px);
+      transform: translateX(-15px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateX(0);
+    }
+  }
+
   .waitlist__container {
+    position: relative;
+    z-index: 3;
     max-width: var(--max-width-narrow);
     width: 100%;
     margin-right: 10%;
@@ -691,44 +791,22 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     margin-top: 28px;
   }
 
-  /* Mobile background image – hidden on desktop */
-  .waitlist__bg-mobile {
-    display: none;
-  }
-
-  @keyframes slideInFromRight {
-    0% {
-      transform: translateX(60%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
   @media (max-width: 640px) {
     .waitlist {
       padding: 0;
       justify-content: center;
-      min-height: auto;
+      min-height: 70vh;
       background: var(--color-bg-primary);
       flex-direction: column;
       align-items: stretch;
     }
 
-    .waitlist__bg-mobile {
-      display: block;
+    .waitlist__scene {
+      position: relative;
+      inset: auto;
       width: 100%;
-      height: auto;
-      object-fit: cover;
-      opacity: 0;
-      transform: translateX(60%);
-    }
-
-    .waitlist__bg-mobile.is-visible {
-      animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-        forwards;
+      height: 60vw;
+      flex-shrink: 0;
     }
 
     .waitlist__container {
