@@ -79,12 +79,12 @@ export const content: SiteContent = {
   waitlist: {
     heading: "Zapiš se na čekací listinu",
     subtitle:
-      "Zápis je zdarma a nezávazný. Dáme ti vědět, až bude vše připravené.",
+      "Zápis je zdarma a nezávazný. Až budeš na řadě, můžeš se rozhodnout.",
     submit: "Zapsat se zdarma",
-    note: "Tvoje údaje jsou v bezpečí. Žádný spam, slibujeme.",
+    note: "Na tyto údaje ti pošleme informace spojené s nabídkou. ",
     upsell: {
       confirm: "Jsi na čekací listině!",
-      text: "Zarezervuj si parfém teď hned a získej",
+      text: "Zarezervuj si parfém předem a získej",
       highlight: "1 + 1 zdarma",
       cta: "Chci 2 za 399 Kč",
       note: "Nabídka platí jen omezenou dobu.",
