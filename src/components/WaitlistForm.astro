@@ -41,7 +41,9 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
       data-upsell-cta={waitlist.upsell.cta}
       data-upsell-payment-link={waitlist.upsell.paymentLink}
       data-upsell-note={waitlist.upsell.note}
-      data-upsell-show-timer={waitlist.upsell.showTimer !== false ? "true" : "false"}
+      data-upsell-show-timer={waitlist.upsell.showTimer !== false
+        ? "true"
+        : "false"}
     >
       <h2 class="waitlist__heading">{waitlist.heading}</h2>
       <p class="waitlist__subtitle" set:html={waitlist.subtitle} />
@@ -462,6 +464,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    background: #000000;
   }
 
   .waitlist__layer {
@@ -817,6 +820,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
       width: 100%;
       height: 60vw;
       flex-shrink: 0;
+      background: #000000;
     }
 
     .waitlist__container {
