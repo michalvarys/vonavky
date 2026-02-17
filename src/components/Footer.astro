@@ -6,13 +6,17 @@ const { footer } = Astro.props;
 
 <footer class="footer">
   <div class="footer__divider" aria-hidden="true"></div>
-  <p class="footer__copyright" set:html={footer.copyright} />
+  <div class="footer__row">
+    <p class="footer__copyright" set:html={footer.copyright} />
+    <a href="https://varyshop.eu" target="_blank" rel="noopener noreferrer" class="footer__varyshop">
+      Vytvořeno na platformě <img src="https://www.varyshop.eu/web/static/img/odoo_logo_tiny.png" alt="VaryShop" class="footer__varyshop-logo" /> — all-in-one systém pro tvůj byznys
+    </a>
+  </div>
 </footer>
 
 <style>
   .footer {
     padding: var(--space-lg);
-    text-align: center;
   }
 
   .footer__divider {
@@ -23,9 +27,43 @@ const { footer } = Astro.props;
     opacity: 0.4;
   }
 
+  .footer__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .footer__copyright {
     font-size: 0.8rem;
     color: var(--color-text-muted);
     letter-spacing: 0.02em;
+  }
+
+  .footer__varyshop {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .footer__varyshop-logo {
+    height: 1.2em;
+    width: auto;
+    vertical-align: middle;
+  }
+
+  .footer__varyshop:hover {
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .footer__row {
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+    }
   }
 </style>
